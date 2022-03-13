@@ -19,4 +19,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
+// Dashboard
 Route::get('/home', 'HomeController@index')->name('home');
+
+// Pekerjaan
+Route::get('/pekerjaan', 'PekerjaanController@index')->name('pekerjaan');
