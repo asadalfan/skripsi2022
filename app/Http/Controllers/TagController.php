@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Perusahaan;
+use App\Tag;
 
-class PerusahaanController extends Controller
+class TagController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -24,9 +24,9 @@ class PerusahaanController extends Controller
      */
     public function index()
     {
-        $perusahaans = Perusahaan::all();
+        $tags = Tag::all();
 
-        return view('perusahaan/index', compact('perusahaans'));
+        return view('tag/index', compact('tags'));
     }
 
     /**
@@ -49,15 +49,13 @@ class PerusahaanController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string',
-            'description' => 'nullable',
-            'address' => 'required|string',
         ]);
 
-        if (! Perusahaan::create($data)) {
-            abort(422, 'Gagal menyimpan perusahaan baru.');
+        if (! Tag::create($data)) {
+            abort(422, 'Gagal menyimpan kategori baru.');
         }
 
-        return redirect('perusahaan');
+        return redirect('kategori');
     }
 
     /**
@@ -93,15 +91,13 @@ class PerusahaanController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string',
-            'description' => 'nullable',
-            'address' => 'required|string',
         ]);
 
-        if (! Perusahaan::where('id', $id)->update($data)) {
+        if (! Tag::where('id', $id)->update($data)) {
             abort(422, 'Gagal melakukan update data.');
         }
 
-        return redirect('perusahaan');
+        return redirect('kategori');
     }
 
     /**
@@ -112,10 +108,10 @@ class PerusahaanController extends Controller
      */
     public function destroy($id)
     {
-        if (! Perusahaan::where('id', $id)->delete()) {
+        if (! Tag::where('id', $id)->delete()) {
             abort(422, 'Gagal menghapus data.');
         }
 
-        return redirect('perusahaan');
+        return redirect('kategori');
     }
 }
