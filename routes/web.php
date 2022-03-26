@@ -28,5 +28,14 @@ Route::post('/perusahaan', 'PerusahaanController@store');
 Route::post('/perusahaan/update/{id}', 'PerusahaanController@update');
 Route::post('/perusahaan/delete/{id}', 'PerusahaanController@destroy');
 
+// Kategori
+Route::get('/kategori', 'TagController@index');
+Route::post('/kategori', 'TagController@store');
+Route::post('/kategori/update/{id}', 'TagController@update');
+Route::post('/kategori/delete/{id}', 'TagController@destroy');
+
 // Pekerjaan
-Route::get('/pekerjaan', 'PekerjaanController@index')->name('pekerjaan');
+Route::get('/pekerjaan', 'PekerjaanController@index');
+Route::post('/pekerjaan', 'PekerjaanController@store');
+Route::post('/pekerjaan/update/{id}', 'PekerjaanController@update');
+Route::post('/pekerjaan/delete/{id}', 'PekerjaanController@destroy');
