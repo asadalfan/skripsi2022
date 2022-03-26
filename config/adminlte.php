@@ -226,31 +226,88 @@ return [
 
     'menu' => [
         [
-            'text' => 'search',
+            'text' => 'Cari',
             'search' => true,
             'topnav' => true,
-        ],
-        [
-            'text' => 'blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
         ],
         [
             'text'        => 'Dashboard',
             'url'         => '/home',
             'icon'        => 'fas fa-fw fa-home',
         ],
-        ['header' => 'account_settings'],
+        ['header' => 'Manajemen Data'],
         [
-            'text' => 'profile',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
+            'text'        => 'Pekerjaan',
+            'url'         => '#',
+            'icon'        => 'fas fa-fw fa-briefcase',
+            'submenu' => [
+                [
+                    'text' => 'Perusahaan',
+                    'url'  => '/perusahaan',
+                    'icon' => 'fas fa-fw fa-building',
+                ],
+                [
+                    'text'    => 'Kategori',
+                    'url'     => '/kategori',
+                    'icon' => 'fas fa-fw fa-tags',
+                ],
+                [
+                    'text'    => 'Pekerjaan',
+                    'url'     => '/pekerjaan',
+                    'icon' => 'fas fa-fw fa-briefcase',
+                ],
+            ],
         ],
         [
-            'text' => 'change_password',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
+            'text'        => 'Pelamar',
+            'url'         => '/pelamar',
+            'icon'        => 'fas fa-fw fa-user',
         ],
+        [
+            'text'        => 'Lamaran',
+            'url'         => '#',
+            'icon'        => 'fas fa-fw fa-envelope',
+            'submenu' => [
+                [
+                    'text' => 'Lamaran',
+                    'url'  => '/lamaran',
+                    'icon' => 'fas fa-fw fa-envelope',
+                ],
+                [
+                    'text'    => 'Hasil',
+                    'url'     => '/lamaran/hasil',
+                    'icon' => 'fas fa-fw fa-envelope-open',
+                ],
+            ],
+        ],
+        [
+            'text'        => 'Tes',
+            'url'         => '#',
+            'icon'        => 'fas fa-fw fa-comments',
+            'submenu' => [
+                [
+                    'text' => 'Soal',
+                    'url'  => '/tes/soal',
+                    'icon' => 'fas fa-fw fa-newspaper',
+                ],
+                [
+                    'text'    => 'Hasil',
+                    'url'     => '/tes/hasil',
+                    'icon' => 'fas fa-fw fa-graduation-cap',
+                ],
+            ],
+        ],
+        // ['header' => 'account_settings'],
+        // [
+        //     'text' => 'profile',
+        //     'url'  => 'admin/settings',
+        //     'icon' => 'fas fa-fw fa-user',
+        // ],
+        // [
+        //     'text' => 'change_password',
+        //     'url'  => 'admin/settings',
+        //     'icon' => 'fas fa-fw fa-lock',
+        // ],
         
         // // Navbar items:
         // [
