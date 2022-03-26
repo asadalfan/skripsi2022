@@ -16,7 +16,7 @@ class CreatePekerjaansTable extends Migration
         Schema::create('perusahaans', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->string('address');
             $table->timestamps();
         });
@@ -38,7 +38,7 @@ class CreatePekerjaansTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('perusahaan_id');
             $table->string('name');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->timestamps();
 
             $table->foreign('perusahaan_id')->references('id')->on('perusahaans')

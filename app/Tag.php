@@ -8,9 +8,9 @@ class Tag extends Model
 {
     
     /**
-     * Get all of the posts that are assigned this tag.
+     * Get all of the pekerjaans that are assigned this tag.
      */
-    public function posts()
+    public function pekerjaans()
     {
         return $this->morphedByMany(Pekerjaan::class, 'taggable');
     }

@@ -238,8 +238,25 @@ return [
         ['header' => 'Manajemen Data'],
         [
             'text'        => 'Pekerjaan',
-            'url'         => '/pekerjaan',
+            'url'         => '#',
             'icon'        => 'fas fa-fw fa-briefcase',
+            'submenu' => [
+                [
+                    'text' => 'Perusahaan',
+                    'url'  => '/perusahaan',
+                    'icon' => 'fas fa-fw fa-building',
+                ],
+                [
+                    'text'    => 'Kategori',
+                    'url'     => '/kategori',
+                    'icon' => 'fas fa-fw fa-tags',
+                ],
+                [
+                    'text'    => 'Pekerjaan',
+                    'url'     => '/pekerjaan',
+                    'icon' => 'fas fa-fw fa-briefcase',
+                ],
+            ],
         ],
         [
             'text'        => 'Pelamar',

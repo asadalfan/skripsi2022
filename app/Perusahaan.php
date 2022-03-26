@@ -18,20 +18,4 @@ class Perusahaan extends Model
     	'created_at',
     	'updated_at',
     ];
-
-    /**
-     * Get all of the tags for the post.
-     */
-    public function tags()
-    {
-        return $this->morphToMany(Tag::class, 'taggable');
-    }
-
-    /**
-     * Get the perusahaan of model.
-     */
-    public function perusahaan()
-    {
-        return $this->belongsTo(Perusahaan::class);
-    }
 }
