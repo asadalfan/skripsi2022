@@ -67,6 +67,14 @@
 												@csrf
 												<div class="modal-body">
 													<div class="form-group">
+														<label for="name">Perusahaan</label>
+														<select class="form-control" name="perusahaan_id" required>
+															@foreach ($perusahaans as $perusahaan)
+										                    <option {{ $pekerjaan->perusahaan->id == $perusahaan->id ? 'selected' : '' }} value="{{ $perusahaan->id }}">{{ $perusahaan->name }}</option>
+															@endforeach
+										                </select>
+													</div>
+													<div class="form-group">
 														<label for="name">Nama</label>
 														<input type="name" class="form-control" name="name" placeholder="Nama Pekerjaan" required value="{{ $pekerjaan->name }}">
 													</div>
@@ -75,13 +83,26 @@
 														<textarea type="description" class="form-control" name="description">{{ $pekerjaan->description }}</textarea>
 													</div>
 													<div class="form-group">
-														<label for="name">Alamat</label>
-														<textarea type="address" class="form-control" name="address" required>{{ $pekerjaan->address }}</textarea>
+														<label for="name">Kategori</label>
+														<div>
+															@php
+															$ptags = [];
+															foreach ($pekerjaan->tags as $ptag) {
+																array_push($ptags, $ptag->id);
+															}
+										                    @endphp
+															<select style="width: 100%; border-color: gray;" class="select2 form-control" multiple="multiple" name="tags[]" required>
+																@foreach ($tags as $tag)
+											                    <option {{ in_array($tag->id, $ptags) ? 'selected' : '' }} value="{{ $tag->id }}">{{ $tag->name }}</option>
+																@endforeach
+											                </select>
+														</div>
 													</div>
 												</div>
 												<div class="modal-footer">
 													<button type="submit" class="btn btn-success">Simpan</button>
 												</div>
+											</form>
 											</form>
 										</div>
 									</div>

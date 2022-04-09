@@ -39,3 +39,9 @@ Route::get('/pekerjaan', 'PekerjaanController@index');
 Route::post('/pekerjaan', 'PekerjaanController@store');
 Route::post('/pekerjaan/update/{id}', 'PekerjaanController@update');
 Route::post('/pekerjaan/delete/{id}', 'PekerjaanController@destroy');
+
+// Pelamar
+Route::get('/pelamar', 'PelamarController@index');
+Route::post('/pelamar', 'PelamarController@store');
+Route::post('/pelamar/update/{id}', 'PelamarController@update');
+Route::post('/pelamar/delete/{id}', 'PelamarController@destroy');

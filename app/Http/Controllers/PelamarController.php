@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Perusahaan;
-use App\Pekerjaan;
-use App\Tag;
-use App\Taggable;
+use App\Pelamar;
+use App\User;
+use Illuminate\Support\Facades\Hash;
 
-class PekerjaanController extends Controller
+class PelamarController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -27,11 +26,9 @@ class PekerjaanController extends Controller
      */
     public function index()
     {
-        $perusahaans = Perusahaan::all();
-        $pekerjaans = Pekerjaan::all();
-        $tags = Tag::all();
+        $pelamars = Pelamar::with(['user'])->get();
 
-        return view('pekerjaan/index', compact(['perusahaans', 'pekerjaans', 'tags']));
+        return view('pelamar/index', compact('pelamars'));
     }
 
     /**
@@ -53,27 +50,28 @@ class PekerjaanController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'perusahaan_id' => 'required|exists:perusahaans,id',
             'name' => 'required|string',
-            'description' => 'nullable',
-            'tags' => 'required|array',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'address' => 'required|string',
         ]);
 
         try {
-            $pekerjaan = Pekerjaan::create($data);
+            $user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+            ]);
 
-            foreach ($data['tags'] as $tag) {
-                Taggable::create([
-                    'tag_id' => $tag,
-                    'taggable_id' => $pekerjaan->id,
-                    'taggable_type' => $pekerjaan->getMorphClass()
-                ]);
-            }
+            Pelamar::create([
+                'user_id' => $user->id,
+                'address' => $data['address'],
+            ]);
         } catch (Exception $e) {
-            abort(422, 'Gagal menyimpan pekerjaan baru.');
-        }
+            abort(422, 'Gagal menyimpan pelamar baru.');
+        }        
 
-        return redirect('pekerjaan');
+        return redirect('pelamar');
     }
 
     /**
@@ -108,35 +106,30 @@ class PekerjaanController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->validate([
-            'perusahaan_id' => 'required|exists:perusahaans,id',
             'name' => 'required|string',
-            'description' => 'nullable',
-            'tags' => 'required|array',
+            'email' => 'required|string|email|max:255',
+            'password' => 'nullable|string|min:8',
+            'address' => 'required|string',
         ]);
 
         try {
-            $pekerjaan = Pekerjaan::find($id);
+            $pelamar = Pelamar::find($id);
+            $user = User::where('id', $pelamar->user_id)->first();
 
-            $pekerjaan->perusahaan_id = $data['perusahaan_id'];
-            $pekerjaan->name = $data['name'];
-            $pekerjaan->description = $data['description'];
-
-            $pekerjaan->save();
-
-            Taggable::where('taggable_id', $id)->where('taggable_type', (new Pekerjaan)->getMorphClass())->delete();
-
-            foreach ($data['tags'] as $tag) {
-                Taggable::create([
-                    'tag_id' => $tag,
-                    'taggable_id' => $pekerjaan->id,
-                    'taggable_type' => $pekerjaan->getMorphClass()
-                ]);
+            $user->name = $data['name'];
+            $user->email = $data['email'];
+            if (! empty($data['password'])) {
+                $user->password = Hash::make($data['password']);
             }
-        } catch (Exception $e) {
-            abort(422, 'Gagal mengupdate pekerjaan.');
-        }
+            $user->save();
 
-        return redirect('pekerjaan');
+            $pelamar->address = $data['address'];
+            $pelamar->save();
+        } catch (Exception $e) {
+            abort(422, 'Gagal mengupdate pelamar.');
+        }        
+
+        return redirect('pelamar');
     }
 
     /**
@@ -148,12 +141,13 @@ class PekerjaanController extends Controller
     public function destroy($id)
     {
         try {
-            Pekerjaan::where('id', $id)->delete();
-            Taggable::where('taggable_id', $id)->where('taggable_type', (new Pekerjaan)->getMorphClass())->delete();
+            $pelamar = Pelamar::find($id);
+
+            User::where('id', $pelamar->user_id)->delete();
         } catch (Exception $e) {
             abort(422, 'Gagal menghapus data.');
         }
 
-        return redirect('pekerjaan');
+        return redirect('pelamar');
     }
 }
