@@ -45,3 +45,9 @@ Route::get('/pelamar', 'PelamarController@index');
 Route::post('/pelamar', 'PelamarController@store');
 Route::post('/pelamar/update/{id}', 'PelamarController@update');
 Route::post('/pelamar/delete/{id}', 'PelamarController@destroy');
+
+// Lamaran
+Route::get('/lamaran', 'LamaranController@index');
+Route::post('/lamaran', 'LamaranController@store');
+Route::post('/lamaran/update/{id}', 'LamaranController@update');
+Route::post('/lamaran/delete/{id}', 'LamaranController@destroy');
