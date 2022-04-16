@@ -14,9 +14,10 @@ class CreateLamaransTable extends Migration
     public function up()
     {
         Schema::create('lamarans', function (Blueprint $table) {
-            $table->increments();
+            $table->id();
             $table->unsignedBigInteger('pelamar_id');
-            $table->unsignedBigInteger('pekerjaan_id');
+            $table->unsignedInteger('pekerjaan_id');
+            $table->text('files')->nullable();
             
             $table->timestamps();
 

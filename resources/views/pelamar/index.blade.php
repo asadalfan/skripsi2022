@@ -4,7 +4,6 @@
 
 @section('content_header')
 <span>
-	Pekerjaan /
 	<a href="#" class="btn btn-link p-0">Pelamar</a>
 </span>
 @stop
