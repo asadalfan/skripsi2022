@@ -99,7 +99,7 @@
 														</div>
 														<div>
 															<a href="{{ asset('storage/cv/' . json_decode($lamaran->files)->cv) }}" class="btn-link" target="_blank" title="{{ json_decode($lamaran->files)->cv }}">
-																File tersimpan saat ini
+																File tersimpan saat ini {{ json_decode($lamaran->files)->cv }}
 															</a>
 														</div>
 													</div>

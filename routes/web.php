@@ -51,3 +51,18 @@ Route::get('/lamaran', 'LamaranController@index');
 Route::post('/lamaran', 'LamaranController@store');
 Route::post('/lamaran/update/{id}', 'LamaranController@update');
 Route::post('/lamaran/delete/{id}', 'LamaranController@destroy');
+
+// Tes
+Route::group(['prefix'=>'tes'], function(){
+	// Soal
+	Route::get('/soal', 'SoalController@index');
+	Route::post('/soal', 'SoalController@store');
+	Route::post('/soal/update/{id}', 'SoalController@update');
+	Route::post('/soal/delete/{id}', 'SoalController@destroy');
+
+	// Hasil
+	Route::get('/hasil', 'SawHasilController@index');
+	Route::post('/hasil', 'SawHasilController@store');
+	Route::post('/hasil/update/{id}', 'SawHasilController@update');
+	Route::post('/hasil/delete/{id}', 'SawHasilController@destroy');
+});

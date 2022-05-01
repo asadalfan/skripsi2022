@@ -24,4 +24,12 @@ class Tag extends Model
     {
         return $this->morphedByMany(Pekerjaan::class, 'taggable');
     }
+
+    /**
+     * Get all of the soals that are assigned this tag.
+     */
+    public function soals()
+    {
+        return $this->morphedByMany(Soal::class, 'taggable');
+    }
 }

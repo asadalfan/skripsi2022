@@ -18,7 +18,6 @@ class CreateLamaransTable extends Migration
             $table->unsignedBigInteger('pelamar_id');
             $table->unsignedInteger('pekerjaan_id');
             $table->text('files')->nullable();
-            
             $table->timestamps();
 
             $table->foreign('pelamar_id')->references('id')->on('pelamars')
