@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Pekerjaan extends Model
+class Soal extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,9 +12,9 @@ class Pekerjaan extends Model
      * @var array
      */
     protected $fillable = [
-    	'perusahaan_id',
-    	'name',
-    	'description',
+    	'saw_kriteria_id',
+        'description',
+    	'options',
     	'created_at',
     	'updated_at',
     ];
@@ -28,10 +28,10 @@ class Pekerjaan extends Model
     }
 
     /**
-     * Get the perusahaan of model.
+     * Get the saw kriteria of model.
      */
-    public function perusahaan()
+    public function sawKriteria()
     {
-        return $this->belongsTo(Perusahaan::class);
+        return $this->belongsTo(SawKriteria::class);
     }
 }
