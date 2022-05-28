@@ -75,7 +75,7 @@
 													</div>
 													<div class="form-group">
 														<label for="password">Password</label>
-														<input type="password" class="form-control" name="password" placeholder="Password">
+														<input type="password" class="form-control" name="password" placeholder="Password" minlength="8">
 													</div>
 													<div class="form-group">
 														<label for="name">Alamat</label>
@@ -150,7 +150,7 @@
 					</div>
 					<div class="form-group">
 						<label for="password">Password</label>
-						<input type="password" class="form-control" name="password" placeholder="Password" required>
+						<input type="password" class="form-control" name="password" placeholder="Password" required minlength="8">
 					</div>
 					<div class="form-group">
 						<label for="name">Alamat</label>
@@ -168,6 +168,13 @@
 
 @section('css')
 <link rel="stylesheet" href="/css/admin_custom.css">
+@stop
+
+@section('js')
+<script>
+</script>
+@stop
+"/css/admin_custom.css">
 @stop
 
 @section('js')

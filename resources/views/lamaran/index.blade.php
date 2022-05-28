@@ -74,7 +74,7 @@
 														<label for="name">Pelamar</label>
 														<select class="form-control" name="pelamar_id" required>
 															@foreach ($pelamars as $pelamar)
-															<option value="{{ $pelamar->id }}">{{ $pelamar->user->name }}</option>
+															<option {{ $lamaran->pelamar_id == $pelamar->id ? 'selected' : '' }} value="{{ $pelamar->id }}">{{ $pelamar->user->name }}</option>
 															@endforeach
 														</select>
 													</div>
@@ -82,7 +82,7 @@
 														<label for="name">Pekerjaan</label>
 														<select class="form-control" name="pekerjaan_id" required>
 															@foreach ($pekerjaans as $pekerjaan)
-															<option value="{{ $pekerjaan->id }}">{{ $pekerjaan->name }}</option>
+															<option {{ $lamaran->pekerjaan_id == $pekerjaan->id ? 'selected' : '' }} value="{{ $pekerjaan->id }}">{{ $pekerjaan->name }}</option>
 															@endforeach
 														</select>
 													</div>

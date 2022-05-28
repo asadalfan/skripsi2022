@@ -65,4 +65,8 @@ Route::group(['prefix'=>'tes'], function(){
 	Route::post('/hasil', 'SawHasilController@store');
 	Route::post('/hasil/update/{id}', 'SawHasilController@update');
 	Route::post('/hasil/delete/{id}', 'SawHasilController@destroy');
+
+    // Peringkat
+    Route::get('/peringkat', 'SawHasilController@showPeringkat');
+    Route::get('/peringkat/hitung', 'SawHasilController@hitungPeringkat');
 });

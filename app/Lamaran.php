@@ -34,4 +34,12 @@ class Lamaran extends Model
     {
         return $this->belongsTo(Pekerjaan::class);
     }
+
+    /**
+     * Get the saw_hasil of model.
+     */
+    public function sawHasils()
+    {
+        return $this->hasMany(SawHasil::class);
+    }
 }

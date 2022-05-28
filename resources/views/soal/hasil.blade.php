@@ -91,7 +91,6 @@
 													<button type="submit" class="btn btn-success">Simpan</button>
 												</div>
 											</form>
-											</form>
 										</div>
 									</div>
 								</div>
@@ -151,7 +150,7 @@
 					</div>
 					<select class="custom-select" name="lamaran_id" id="inputGroupSelect01" required>
 						@foreach ($lamarans as $lamaran)
-						<option value="{{ $lamaran->id }}">{{ $lamaran->id }}</option>
+						<option value="{{ $lamaran->id }}">{{ $lamaran->id }} ({{ $lamaran->pelamar->user->name }})</option>
 						@endforeach
 					</select>
 					<div class="form-group mb-0 mt-3">

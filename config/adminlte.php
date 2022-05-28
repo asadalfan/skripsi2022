@@ -295,6 +295,11 @@ return [
                     'url'     => '/tes/hasil',
                     'icon' => 'fas fa-fw fa-graduation-cap',
                 ],
+                [
+                    'text'    => 'Peringkat',
+                    'url'     => '/tes/peringkat',
+                    'icon' => 'fas fa-list-ol',
+                ],
             ],
         ],
         // ['header' => 'account_settings'],
@@ -308,7 +313,7 @@ return [
         //     'url'  => 'admin/settings',
         //     'icon' => 'fas fa-fw fa-lock',
         // ],
-        
+
         // // Navbar items:
         // [
         //     'type'         => 'navbar-search',

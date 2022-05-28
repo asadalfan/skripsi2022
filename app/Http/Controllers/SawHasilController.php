@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Fuzzy;
 use Illuminate\Http\Request;
 use App\SawHasil;
 use App\SawKriteria;
 use App\Lamaran;
+use App\SawPeringkat;
+use Illuminate\Support\Facades\DB;
 
 class SawHasilController extends Controller
 {
@@ -31,9 +34,97 @@ class SawHasilController extends Controller
             'sawKriteria',
         ])->get();
         $saw_kriterias = SawKriteria::all();
-        $lamarans = Lamaran::all();
+        $lamarans = Lamaran::with(['pelamar.user'])->get();
 
         return view('soal/hasil', compact(['hasils', 'saw_kriterias', 'lamarans']));
+    }
+
+    /**
+     * Display a listing of peringkat.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showPeringkat()
+    {
+        $peringkats = SawPeringkat::with([
+            'lamaran.pelamar.user',
+            'lamaran.sawHasils',
+        ])
+        ->orderBy('nilai', 'desc')
+        ->get();
+        $saw_kriterias = SawKriteria::all();
+
+        return view('soal/peringkat', compact(['peringkats', 'saw_kriterias']));
+    }
+
+    /**
+     * Hitung urutan peringkat.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function hitungPeringkat()
+    {
+        $alternatives = Lamaran::with([
+            'pelamar.user',
+            'sawHasils',
+        ])->get();
+        $totalBobot = SawKriteria::select(
+            DB::raw('sum(bobot) as bobot')
+        )->first()->bobot;
+        $nilaiMax = SawHasil::select(
+            DB::raw('max(nilai) as nilai'),
+            'saw_kriterias.bobot as bobot',
+            'saw_kriteria_id'
+        )
+        ->join('saw_kriterias', 'saw_hasils.saw_kriteria_id', 'saw_kriterias.id')
+        ->groupBy('saw_kriteria_id', 'bobot')
+        ->get();
+        $fuzzies = Fuzzy::all();
+
+        try {
+            SawPeringkat::truncate(); // Mengosongkan Data
+            foreach ($alternatives as $alternative) {
+                // Normalisasi
+                $saw_normalisasi = [];
+                foreach ($alternative->sawHasils as $hasil) {
+                    foreach ($nilaiMax as $max) {
+                        if ($max->saw_kriteria_id == $hasil->saw_kriteria_id) {
+                            array_push($saw_normalisasi, (object)[
+                                'saw_kriteria_id' => $max->saw_kriteria_id,
+                                'bobot' => $max->bobot,
+                                'nilai' => $hasil->nilai / $max->nilai,
+                            ]);
+                        }
+                    }
+                }
+                $alternative->saw_normalisasi = $saw_normalisasi;
+                $alternative->saw_peringkat = (object) [
+                    'lamaran_id' => $alternative->id,
+                    'nilai' => 0
+                ];
+
+                // Perangkingan
+                foreach ($alternative->saw_normalisasi as $normalisasi) {
+                    $alternative->saw_peringkat->nilai += $normalisasi->nilai * ($normalisasi->bobot * $totalBobot);
+                }
+                $nilai = $alternative->saw_peringkat->nilai * 100;
+                // Fuzzy Logic
+                foreach ($fuzzies as $fuzzy) {
+                    if ((!$fuzzy->min || ($fuzzy->min && $fuzzy->min < $nilai))
+                        && (!$fuzzy->max || ($fuzzy->max && $fuzzy->max >= $nilai))
+                    ) {
+                        $alternative->saw_peringkat->nilai_fuzzy = $fuzzy->nilai;
+                    }
+                }
+
+                // Save
+                SawPeringkat::create((array) $alternative->saw_peringkat);
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
+        return redirect('tes/peringkat');
     }
 
     /**
