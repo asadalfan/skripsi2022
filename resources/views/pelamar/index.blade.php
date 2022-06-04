@@ -174,10 +174,3 @@
 <script>
 </script>
 @stop
-"/css/admin_custom.css">
-@stop
-
-@section('js')
-<script>
-</script>
-@stop
