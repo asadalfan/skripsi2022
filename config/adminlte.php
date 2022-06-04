@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'SIKAB',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -235,11 +235,15 @@ return [
             'url'         => '/home',
             'icon'        => 'fas fa-fw fa-home',
         ],
-        ['header' => 'Manajemen Data'],
+        [
+            'header' => 'Manajemen Data',
+            'user_types'  => 'admin',
+        ],
         [
             'text'        => 'Pekerjaan',
             'url'         => '#',
             'icon'        => 'fas fa-fw fa-briefcase',
+            'user_types'  => 'admin',
             'submenu' => [
                 [
                     'text' => 'Perusahaan',
@@ -262,11 +266,13 @@ return [
             'text'        => 'Pelamar',
             'url'         => '/pelamar',
             'icon'        => 'fas fa-fw fa-user',
+            'user_types'  => 'admin',
         ],
         [
             'text'        => 'Lamaran',
             'url'         => '#',
             'icon'        => 'fas fa-fw fa-envelope',
+            'user_types'  => 'admin',
             'submenu' => [
                 [
                     'text' => 'Lamaran',
@@ -284,6 +290,7 @@ return [
             'text'        => 'Tes',
             'url'         => '#',
             'icon'        => 'fas fa-fw fa-comments',
+            'user_types'  => 'admin',
             'submenu' => [
                 [
                     'text' => 'Soal',

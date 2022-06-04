@@ -151,6 +151,12 @@ class SawHasilController extends Controller
             'nilai' => 'required',
         ]);
 
+        if ($hasil = SawHasil::where('lamaran_id', $data['lamaran_id'])
+        ->where('saw_kriteria_id', $data['saw_kriteria_id'])->first())
+        {
+            return $this->update($request, $hasil->id);
+        }
+
         try {
             $soal = SawHasil::create($data);
         } catch (Exception $e) {
