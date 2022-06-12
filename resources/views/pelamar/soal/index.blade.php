@@ -3,10 +3,12 @@
 @section('title', 'Soal')
 
 @section('content_header')
-<span>
-    Tes /
-    <a href="#" class="btn btn-link p-0">Soal</a>
-</span>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Tes</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Soal</li>
+    </ol>
+</nav>
 @stop
 
 @section('content')

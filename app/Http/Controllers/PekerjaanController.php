@@ -7,6 +7,7 @@ use App\Perusahaan;
 use App\Pekerjaan;
 use App\Tag;
 use App\Taggable;
+use Illuminate\Support\Facades\Auth;
 
 class PekerjaanController extends Controller
 {
@@ -155,5 +156,73 @@ class PekerjaanController extends Controller
         }
 
         return redirect('pekerjaan');
+    }
+
+    /**
+     * Display a listing of the verifikasi resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function verifikasi()
+    {
+        $pekerjaans = Pekerjaan::with(['tags', 'perusahaan', 'diverifikasiOleh'])->get();
+
+        return view('pekerjaan/verifikasi', compact([
+            'pekerjaans',
+        ]));
+    }
+
+    /**
+     * Terima specified resource in storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function verified(Request $request, $id)
+    {
+        $data = $request->validate([
+            'catatan_diverifikasi' => 'nullable|string',
+        ]);
+
+        try {
+            $pekerjaan = Pekerjaan::find($id);
+
+            $pekerjaan->diverifikasi = true;
+            $pekerjaan->diverifikasi_pada = now();
+            $pekerjaan->diverifikasi_oleh = Auth::id();
+            $pekerjaan->catatan_diverifikasi = $data['catatan_diverifikasi'];
+            $pekerjaan->save();
+        } catch (Exception $e) {
+            abort(422, 'Gagal memverifikasi pekerjaan.');
+        }
+
+        return redirect('pekerjaan/verifikasi');
+    }
+
+    /**
+     * Terima specified resource in storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function unverified(Request $request, $id)
+    {
+        $data = $request->validate([
+            'catatan_diverifikasi' => 'nullable|string',
+        ]);
+
+        try {
+            $pekerjaan = Pekerjaan::find($id);
+
+            $pekerjaan->diverifikasi = false;
+            $pekerjaan->diverifikasi_pada = now();
+            $pekerjaan->diverifikasi_oleh = Auth::id();
+            $pekerjaan->catatan_diverifikasi = $data['catatan_diverifikasi'];
+            $pekerjaan->save();
+        } catch (Exception $e) {
+            abort(422, 'Gagal mengunverifikasi pekerjaan.');
+        }
+
+        return redirect('pekerjaan/verifikasi');
     }
 }

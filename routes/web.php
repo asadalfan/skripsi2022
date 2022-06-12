@@ -36,10 +36,17 @@ Route::middleware(['role:admin'])->group(function () {
     Route::post('/kategori/delete/{id}', 'TagController@destroy');
 
     // Pekerjaan
-    Route::get('/pekerjaan', 'PekerjaanController@index');
-    Route::post('/pekerjaan', 'PekerjaanController@store');
-    Route::post('/pekerjaan/update/{id}', 'PekerjaanController@update');
-    Route::post('/pekerjaan/delete/{id}', 'PekerjaanController@destroy');
+    Route::group(['prefix' => 'pekerjaan'], function () {
+        Route::get('/', 'PekerjaanController@index');
+        Route::post('/', 'PekerjaanController@store');
+        Route::post('/update/{id}', 'PekerjaanController@update');
+        Route::post('/delete/{id}', 'PekerjaanController@destroy');
+
+        // Pekerjaan Verifikasi
+        Route::get('/verifikasi', 'PekerjaanController@verifikasi');
+        Route::post('/{id}/verified', 'PekerjaanController@verified');
+        Route::post('/{id}/unverified', 'PekerjaanController@unverified');
+    });
 
     // Pelamar
     Route::get('/pelamar', 'PelamarController@index');
@@ -48,10 +55,22 @@ Route::middleware(['role:admin'])->group(function () {
     Route::post('/pelamar/delete/{id}', 'PelamarController@destroy');
 
     // Lamaran
-    Route::get('/lamaran', 'LamaranController@index');
-    Route::post('/lamaran', 'LamaranController@store');
-    Route::post('/lamaran/update/{id}', 'LamaranController@update');
-    Route::post('/lamaran/delete/{id}', 'LamaranController@destroy');
+    Route::group(['prefix' => 'lamaran'], function () {
+        Route::get('/', 'LamaranController@index');
+        Route::post('/', 'LamaranController@store');
+        Route::post('/update/{id}', 'LamaranController@update');
+        Route::post('/delete/{id}', 'LamaranController@destroy');
+
+        // Lamaran Verifikasi
+        Route::get('/verifikasi', 'LamaranController@verifikasi');
+        Route::post('/{id}/verified', 'LamaranController@verified');
+        Route::post('/{id}/unverified', 'LamaranController@unverified');
+
+        // Lamaran Hasil
+        Route::get('/hasil', 'LamaranController@hasil');
+        Route::post('/{id}/terima', 'LamaranController@terima');
+        Route::post('/{id}/tolak', 'LamaranController@tolak');
+    });
 
     // Tes
     Route::group(['prefix' => 'tes'], function () {
@@ -75,6 +94,19 @@ Route::middleware(['role:admin'])->group(function () {
 
 Route::middleware(['role:pelamar'])->group(function () {
     Route::group(['namespace' => 'Pelamar', 'prefix' => 'pelamar'], function () {
+        // Tes
+        Route::group(['prefix' => 'tes'], function () {
+            // Soal
+            Route::get('/soal', 'SoalController@index');
+            Route::post('/soal', 'SoalController@store');
+            Route::post('/soal/update/{id}', 'SoalController@update');
+            Route::post('/soal/delete/{id}', 'SoalController@destroy');
 
+            // Hasil
+            Route::get('/hasil', 'SawHasilController@index');
+            Route::post('/hasil', 'SawHasilController@store');
+            Route::post('/hasil/update/{id}', 'SawHasilController@update');
+            Route::post('/hasil/delete/{id}', 'SawHasilController@destroy');
+        });
     });
 });

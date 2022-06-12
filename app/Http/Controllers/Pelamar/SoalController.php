@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pelamar;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Soal;
 use App\Tag;
@@ -52,7 +53,7 @@ class SoalController extends Controller
         ->get();
         $tags = Tag::all();
 
-        return view('soal/index', compact(['soals', 'tags', 'saw_kriterias', 'cariKriteriaId']));
+        return view('pelamar/soal/index', compact(['soals', 'tags', 'saw_kriterias', 'cariKriteriaId']));
     }
 
     /**

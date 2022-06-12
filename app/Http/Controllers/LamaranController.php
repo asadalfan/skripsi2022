@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Lamaran;
 use App\Pelamar;
 use App\Pekerjaan;
-use Illuminate\Support\Facades\Hash;
+use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class LamaranController extends Controller
 {
@@ -80,7 +81,7 @@ class LamaranController extends Controller
             ]);
         } catch (Exception $e) {
             abort(422, 'Gagal menyimpan lamaran baru.');
-        }        
+        }
 
         return redirect('lamaran');
     }
@@ -141,7 +142,7 @@ class LamaranController extends Controller
             $lamaran->save();
         } catch (Exception $e) {
             abort(422, 'Gagal mengupdate lamaran.');
-        }        
+        }
 
         return redirect('lamaran');
     }
@@ -161,5 +162,143 @@ class LamaranController extends Controller
         }
 
         return redirect('lamaran');
+    }
+
+    /**
+     * Display a listing of the verifikasi resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function verifikasi()
+    {
+        $lamarans = Lamaran::with(['pelamar.user', 'diverifikasiOleh'])->get();
+
+        return view('lamaran/verifikasi', compact([
+            'lamarans',
+        ]));
+    }
+
+    /**
+     * Terima specified resource in storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function verified(Request $request, $id)
+    {
+        $data = $request->validate([
+            'catatan_diverifikasi' => 'nullable|string',
+        ]);
+
+        try {
+            $lamaran = Lamaran::find($id);
+
+            $lamaran->diverifikasi = true;
+            $lamaran->diverifikasi_pada = now();
+            $lamaran->diverifikasi_oleh = Auth::id();
+            $lamaran->catatan_diverifikasi = $data['catatan_diverifikasi'];
+            $lamaran->save();
+        } catch (Exception $e) {
+            abort(422, 'Gagal memverifikasi lamaran.');
+        }
+
+        return redirect('lamaran/verifikasi');
+    }
+
+    /**
+     * Terima specified resource in storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function unverified(Request $request, $id)
+    {
+        $data = $request->validate([
+            'catatan_diverifikasi' => 'nullable|string',
+        ]);
+
+        try {
+            $lamaran = Lamaran::find($id);
+
+            $lamaran->diverifikasi = false;
+            $lamaran->diverifikasi_pada = now();
+            $lamaran->diverifikasi_oleh = Auth::id();
+            $lamaran->catatan_diverifikasi = $data['catatan_diverifikasi'];
+            $lamaran->save();
+        } catch (Exception $e) {
+            abort(422, 'Gagal mengunverifikasi lamaran.');
+        }
+
+        return redirect('lamaran/verifikasi');
+    }
+
+    /**
+     * Display a listing of the hasil resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function hasil()
+    {
+        $lamarans = Lamaran::with(['pelamar.user', 'diterimaOleh'])
+            ->where('diverifikasi', true)
+            ->get();
+
+        return view('lamaran/hasil', compact([
+            'lamarans',
+        ]));
+    }
+
+    /**
+     * Terima specified resource in storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function terima(Request $request, $id)
+    {
+        $data = $request->validate([
+            'alasan_diterima' => 'nullable|string',
+        ]);
+
+        try {
+            $lamaran = Lamaran::find($id);
+
+            $lamaran->diterima = true;
+            $lamaran->diterima_pada = now();
+            $lamaran->diterima_oleh = Auth::id();
+            $lamaran->alasan_diterima = $data['alasan_diterima'];
+            $lamaran->save();
+        } catch (Exception $e) {
+            abort(422, 'Gagal menerima lamaran.');
+        }
+
+        return redirect('lamaran/hasil');
+    }
+
+    /**
+     * Terima specified resource in storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function tolak(Request $request, $id)
+    {
+        $data = $request->validate([
+            'alasan_diterima' => 'nullable|string',
+        ]);
+
+        try {
+            $lamaran = Lamaran::find($id);
+
+            $lamaran->diterima = false;
+            $lamaran->diterima_pada = now();
+            $lamaran->diterima_oleh = Auth::id();
+            $lamaran->alasan_diterima = $data['alasan_diterima'];
+            $lamaran->save();
+        } catch (Exception $e) {
+            abort(422, 'Gagal menolak lamaran.');
+        }
+
+        return redirect('lamaran/hasil');
     }
 }

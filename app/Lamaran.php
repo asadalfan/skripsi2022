@@ -17,6 +17,24 @@ class Lamaran extends Model
     	'files',
     	'created_at',
     	'updated_at',
+        'diverifikasi',
+        'diverifikasi_pada',
+        'diverifikasi_oleh',
+        'catatan_diverifikasi',
+        'diterima',
+        'diterima_pada',
+        'diterima_oleh',
+        'alasan_diterima',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'diverifikasi' => 'boolean',
+        'diterima' => 'boolean',
     ];
 
     /**
@@ -41,5 +59,21 @@ class Lamaran extends Model
     public function sawHasils()
     {
         return $this->hasMany(SawHasil::class);
+    }
+
+    /**
+     * Get the pemverifikasi of model.
+     */
+    public function diverifikasiOleh()
+    {
+        return $this->belongsTo(User::class, 'diverifikasi_oleh');
+    }
+
+    /**
+     * Get the penerima of model.
+     */
+    public function diterimaOleh()
+    {
+        return $this->belongsTo(User::class, 'diterima_oleh');
     }
 }

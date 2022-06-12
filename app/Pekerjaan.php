@@ -17,6 +17,19 @@ class Pekerjaan extends Model
     	'description',
     	'created_at',
     	'updated_at',
+        'diverifikasi',
+        'diverifikasi_pada',
+        'diverifikasi_oleh',
+        'catatan_diverifikasi',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'diverifikasi' => 'boolean',
     ];
 
     /**
@@ -33,5 +46,13 @@ class Pekerjaan extends Model
     public function perusahaan()
     {
         return $this->belongsTo(Perusahaan::class);
+    }
+
+    /**
+     * Get the pemverifikasi of model.
+     */
+    public function diverifikasiOleh()
+    {
+        return $this->belongsTo(User::class, 'diverifikasi_oleh');
     }
 }

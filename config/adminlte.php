@@ -260,6 +260,11 @@ return [
                     'url'     => '/pekerjaan',
                     'icon' => 'fas fa-fw fa-briefcase',
                 ],
+                [
+                    'text' => 'Verifikasi',
+                    'url'  => '/pekerjaan/verifikasi',
+                    'icon' => 'fas fa-fw fa-check-circle',
+                ],
             ],
         ],
         [
@@ -280,6 +285,11 @@ return [
                     'icon' => 'fas fa-fw fa-envelope',
                 ],
                 [
+                    'text' => 'Verifikasi',
+                    'url'  => '/lamaran/verifikasi',
+                    'icon' => 'fas fa-fw fa-check-circle',
+                ],
+                [
                     'text'    => 'Hasil',
                     'url'     => '/lamaran/hasil',
                     'icon' => 'fas fa-fw fa-envelope-open',
@@ -290,12 +300,19 @@ return [
             'text'        => 'Tes',
             'url'         => '#',
             'icon'        => 'fas fa-fw fa-comments',
-            'user_types'  => 'admin',
+            'user_types'  => 'admin pelamar',
             'submenu' => [
                 [
                     'text' => 'Soal',
                     'url'  => '/tes/soal',
                     'icon' => 'fas fa-fw fa-newspaper',
+                    'user_types'  => 'admin',
+                ],
+                [
+                    'text' => 'Soal',
+                    'url'  => '/pelamar/tes/soal',
+                    'icon' => 'fas fa-fw fa-newspaper',
+                    'user_types'  => 'pelamar',
                 ],
                 [
                     'text'    => 'Hasil',
