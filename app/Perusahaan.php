@@ -12,10 +12,19 @@ class Perusahaan extends Model
      * @var array
      */
     protected $fillable = [
-    	'name',
+    	'user_id',
+        'name',
     	'description',
     	'address',
     	'created_at',
     	'updated_at',
     ];
+
+    /**
+     * Get the owner of model.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

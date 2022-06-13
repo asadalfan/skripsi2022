@@ -60,6 +60,8 @@ class PekerjaanController extends Controller
             'tags' => 'required|array',
         ]);
 
+        $data = array_merge(['user_id' => Auth::id()], $data);
+
         try {
             $pekerjaan = Pekerjaan::create($data);
 

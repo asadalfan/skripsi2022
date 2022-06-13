@@ -26,6 +26,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Pemilik</th>
                                     <th>Nama</th>
                                     <th>Deskripsi</th>
                                     <th>Alamat</th>
@@ -42,6 +43,7 @@
                                 @foreach ($perusahaans as $perusahaan)
                                 <tr>
                                     <td>{{ ++$number }}</td>
+                                    <td>{{ $perusahaan->user ? $perusahaan->user->name : '-' }}</td>
                                     <td>{{ $perusahaan->name }}</td>
                                     <td>{{ $perusahaan->description ?? '-' }}</td>
                                     <td>{{ $perusahaan->address }}</td>
@@ -112,7 +114,7 @@
                                 @endforeach
                                 @else
                                 <tr>
-                                    <td colspan="6" class="text-center">Data tidak ada. Klik tombol Tambah untuk menambah data baru.</td>
+                                    <td colspan="7" class="text-center">Data tidak ada. Klik tombol Tambah untuk menambah data baru.</td>
                                 </tr>
                                 @endif
                             </tbody>

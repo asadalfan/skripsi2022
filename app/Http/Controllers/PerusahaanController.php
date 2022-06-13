@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Perusahaan;
+use Illuminate\Support\Facades\Auth;
 
 class PerusahaanController extends Controller
 {
@@ -52,6 +53,8 @@ class PerusahaanController extends Controller
             'description' => 'nullable',
             'address' => 'required|string',
         ]);
+
+        $data = array_merge(['user_id' => Auth::id()], $data);
 
         if (! Perusahaan::create($data)) {
             abort(422, 'Gagal menyimpan perusahaan baru.');

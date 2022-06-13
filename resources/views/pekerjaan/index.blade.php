@@ -26,6 +26,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Pemilik</th>
                                     <th>Nama</th>
                                     <th>Deskripsi</th>
                                     <th>Perusahaan</th>
@@ -42,6 +43,7 @@
                                 @foreach ($pekerjaans as $pekerjaan)
                                 <tr>
                                     <td>{{ ++$number }}</td>
+                                    <td>{{ $pekerjaan->user ? $pekerjaan->user->name : '-' }}</td>
                                     <td class="d-inline-block">
                                         {{ $pekerjaan->name }}
                                         @if($pekerjaan->diverifikasi)
@@ -138,7 +140,7 @@
                                 @endforeach
                                 @else
                                 <tr>
-                                    <td colspan="6" class="text-center">Data tidak ada. Klik tombol Tambah untuk menambah data baru.</td>
+                                    <td colspan="7" class="text-center">Data tidak ada. Klik tombol Tambah untuk menambah data baru.</td>
                                 </tr>
                                 @endif
                             </tbody>

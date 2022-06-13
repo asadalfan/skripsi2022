@@ -13,6 +13,7 @@ class Pekerjaan extends Model
      */
     protected $fillable = [
     	'perusahaan_id',
+        'user_id',
     	'name',
     	'description',
     	'created_at',
@@ -46,6 +47,14 @@ class Pekerjaan extends Model
     public function perusahaan()
     {
         return $this->belongsTo(Perusahaan::class);
+    }
+
+    /**
+     * Get the owner of model.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     /**
