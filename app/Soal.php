@@ -12,7 +12,9 @@ class Soal extends Model
      * @var array
      */
     protected $fillable = [
-    	'saw_kriteria_id',
+        'saw_kriteria_id',
+        'user_id',
+        'pekerjaan_id',
         'description',
     	'options',
     	'created_at',
@@ -33,5 +35,21 @@ class Soal extends Model
     public function sawKriteria()
     {
         return $this->belongsTo(SawKriteria::class);
+    }
+
+    /**
+     * Get the user of model.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the pekerjaan of model.
+     */
+    public function pekerjaan()
+    {
+        return $this->belongsTo(Pekerjaan::class);
     }
 }

@@ -268,6 +268,18 @@ return [
             ],
         ],
         [
+            'text'        => 'Pekerjaan',
+            'url'         => '/pelamar/pekerjaan',
+            'icon'        => 'fas fa-fw fa-briefcase',
+            'user_types'  => 'pelamar',
+        ],
+        [
+            'text'        => 'Lamaran',
+            'url'         => '/pelamar/lamaran',
+            'icon'        => 'fas fa-fw fa-envelope',
+            'user_types'  => 'pelamar',
+        ],
+        [
             'text'        => 'Pelamar',
             'url'         => '/pelamar',
             'icon'        => 'fas fa-fw fa-user',
@@ -300,7 +312,7 @@ return [
             'text'        => 'Tes',
             'url'         => '#',
             'icon'        => 'fas fa-fw fa-comments',
-            'user_types'  => 'admin pelamar',
+            'user_types'  => 'admin',
             'submenu' => [
                 [
                     'text' => 'Soal',
@@ -309,22 +321,30 @@ return [
                     'user_types'  => 'admin',
                 ],
                 [
-                    'text' => 'Soal',
-                    'url'  => '/pelamar/tes/soal',
-                    'icon' => 'fas fa-fw fa-newspaper',
-                    'user_types'  => 'pelamar',
-                ],
-                [
                     'text'    => 'Hasil',
                     'url'     => '/tes/hasil',
                     'icon' => 'fas fa-fw fa-graduation-cap',
+                    'user_types'  => 'admin',
                 ],
                 [
                     'text'    => 'Peringkat',
                     'url'     => '/tes/peringkat',
                     'icon' => 'fas fa-list-ol',
+                    'user_types'  => 'admin',
                 ],
             ],
+        ],
+        [
+            'text'    => 'Hasil Tes',
+            'url'     => '/pelamar/tes/hasil',
+            'icon' => 'fas fa-fw fa-graduation-cap',
+            'user_types'  => 'pelamar',
+        ],
+        [
+            'text'    => 'Hasil Lamaran',
+            'url'     => '/pelamar/lamaran/hasil',
+            'icon' => 'fas fa-fw fa-envelope-open',
+            'user_types'  => 'pelamar',
         ],
         // ['header' => 'account_settings'],
         // [

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Pekerjaan;
 use Illuminate\Http\Request;
 use App\Soal;
 use App\Tag;
@@ -35,9 +36,11 @@ class SoalController extends Controller
         $saw_kriterias = SawKriteria::all();
         $cariKriteriaId = \Arr::get($data, 'cari_kriteria_id') ?? (($saw_kriterias->first() ? $saw_kriterias->first()->id : null));
 
-        // dd(\Arr::get($data, 'cari'));
+        $user = \Auth::user();
         $soals = Soal::with([
-            'sawKriteria'
+            'sawKriteria',
+            'user',
+            'pekerjaan',
         ])
         ->when(
             $cari = \Arr::get($data, 'cari'), function($query) use ($cari) {
@@ -49,10 +52,24 @@ class SoalController extends Controller
                 $query->where('saw_kriteria_id', $cariKriteriaId);
             }
         )
+        ->when(
+            $user->type != 'admin', function($query) use ($user) {
+                $query->where('user_id', $user->id);
+            }
+        )
         ->get();
         $tags = Tag::all();
+        $pekerjaans = Pekerjaan::when($user->type != 'admin', function($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })->get();
 
-        return view('soal/index', compact(['soals', 'tags', 'saw_kriterias', 'cariKriteriaId']));
+        return view('soal/index', compact([
+            'soals',
+            'tags',
+            'saw_kriterias',
+            'cariKriteriaId',
+            'pekerjaans',
+        ]));
     }
 
     /**
@@ -75,6 +92,7 @@ class SoalController extends Controller
     {
         $data = $request->validate([
             'saw_kriteria_id' => 'nullable|exists:saw_kriterias,id',
+            'pekerjaan_id' => 'nullable|exists:pekerjaans,id',
             'description' => 'nullable',
             'options' => 'nullable|array',
             'answers' => 'nullable|array',
@@ -97,6 +115,11 @@ class SoalController extends Controller
                     ]);
                 }
                 $data['options'] = json_encode($options);
+            }
+
+            $user = \Auth::user();
+            if ($user->type != 'admin') {
+                $data['user_id'] = $user->id;
             }
 
             $soal = Soal::create($data);

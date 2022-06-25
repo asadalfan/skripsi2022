@@ -48,6 +48,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Kriteria</th>
+                                    <th>Pekerjaan</th>
                                     <th>Pertanyaan</th>
                                     <th>Dibuat pada</th>
                                     <th>Diperbarui pada</th>
@@ -63,6 +64,7 @@
                                 <tr>
                                     <td>{{ ++$number }}</td>
                                     <td>{{ $soal->sawKriteria->nama }}</td>
+                                    <td>{{ $soal->pekerjaan ? $soal->pekerjaan->name : '-' }}</td>
                                     <td>{{ $soal->description }}</td>
                                     <td>{{ date("Y-m-d H:i:s", strtotime($soal->created_at." +7 hours")) }}</td>
                                     <td>{{ date("Y-m-d H:i:s", strtotime($soal->updated_at." +7 hours")) }}</td>
@@ -93,6 +95,11 @@
                                                         <option {{ $soal->saw_kriteria_id == $saw_kriteria->id ? 'selected' : '' }} value="{{ $saw_kriteria->id }}">{{ $saw_kriteria->nama }}</option>
                                                         @endforeach
                                                     </select>
+                                                    <select class="custom-select mt-3" name="pekerjaan_id" id="inputGroupSelect01">
+                                                        @foreach ($pekerjaans as $pekerjaan)
+                                                        <option {{ $soal->pekerjaan_id == $pekerjaan->id ? 'selected' : '' }} value="{{ $pekerjaan->id }}">{{ $pekerjaan->name }}</option>
+                                                        @endforeach
+                                                    </select>
                                                     <div class="form-group mt-3">
                                                         <label for="description">Pertanyaan</label>
                                                         <textarea type="description" class="form-control" name="description">{{ $soal->description }}</textarea>
@@ -114,7 +121,7 @@
                                                     <div class="form-check mt-1">
                                                         <input class="form-check-input" type="radio" {{ $option && $option->is_true ? 'checked' : '' }} name="answers[]" value="{{ $i++ }}" id="flexRadioDefault1">
                                                         <label class="form-check-label w-100" for="flexRadioDefault1">
-                                                            <input type="text" class="form-control" name="options[]" placeholder="Jawaban" value="{{ $option && $option->value ? $option->value : '' }}">
+                                                            <input type="text" class="form-control" name="options[]" placeholder="Jawaban" value="{{ $option && $option->value != null ? $option->value : '' }}">
                                                         </label>
                                                     </div>
                                                     @endforeach
@@ -200,6 +207,11 @@
                     <select class="custom-select" name="saw_kriteria_id" id="inputGroupSelect01" required>
                         @foreach ($saw_kriterias as $saw_kriteria)
                         <option value="{{ $saw_kriteria->id }}">{{ $saw_kriteria->nama }}</option>
+                        @endforeach
+                    </select>
+                    <select class="custom-select mt-3" name="pekerjaan_id" id="inputGroupSelect01" required>
+                        @foreach ($pekerjaans as $pekerjaan)
+                        <option value="{{ $pekerjaan->id }}">{{ $pekerjaan->name }}</option>
                         @endforeach
                     </select>
                     <div class="form-group mt-3">

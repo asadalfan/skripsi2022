@@ -69,7 +69,7 @@ class PelamarController extends Controller
             ]);
         } catch (Exception $e) {
             abort(422, 'Gagal menyimpan pelamar baru.');
-        }        
+        }
 
         return redirect('pelamar');
     }
@@ -83,6 +83,17 @@ class PelamarController extends Controller
     public function show($id)
     {
         //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     */
+    public function showProfile()
+    {
+        $pelamars = Pelamar::with(['user'])->where('user_id', \Auth::user()->id)->get();
+
+        return view('pelamar/index', compact('pelamars'));
     }
 
     /**
@@ -105,6 +116,20 @@ class PelamarController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->_update($request, $id);
+
+        return redirect('pelamar');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function _update(Request $request, $id)
+    {
         $data = $request->validate([
             'name' => 'required|string',
             'email' => 'required|string|email|max:255',
@@ -118,7 +143,7 @@ class PelamarController extends Controller
 
             $user->name = $data['name'];
             $user->email = $data['email'];
-            if (! empty($data['password'])) {
+            if (!empty($data['password'])) {
                 $user->password = Hash::make($data['password']);
             }
             $user->save();
@@ -127,9 +152,7 @@ class PelamarController extends Controller
             $pelamar->save();
         } catch (Exception $e) {
             abort(422, 'Gagal mengupdate pelamar.');
-        }        
-
-        return redirect('pelamar');
+        }
     }
 
     /**

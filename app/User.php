@@ -16,7 +16,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'email',
+        'password',
+        'type',
     ];
 
     /**
@@ -37,6 +40,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Get the pelamar of model.
+     */
+    public function pelamar()
+    {
+        return $this->hasOne(Pelamar::class);
+    }
+
     public function adminlte_image()
     {
         return 'https://picsum.photos/300/300';
@@ -49,6 +60,6 @@ class User extends Authenticatable
 
     public function adminlte_profile_url()
     {
-        return 'profile/username';
+        return 'profile';
     }
 }

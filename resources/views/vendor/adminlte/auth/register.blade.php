@@ -90,6 +90,18 @@
             @enderror
         </div>
 
+        {{-- User Type --}}
+        <div class="input-group mb-3">
+            <div class="form-group w-100">
+                <label for="name">Sebagai</label>
+                <select class="form-control" name="type" required>
+                    @foreach ($userTypes as $userType)
+                    <option value="{{ $userType }}">{{ ucfirst($userType) }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
         {{-- Register button --}}
         <button type="submit" class="btn btn-block {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
             <span class="fas fa-user-plus"></span>

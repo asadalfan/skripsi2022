@@ -34,4 +34,12 @@ class SawHasil extends Model
     {
         return $this->belongsTo(SawKriteria::class);
     }
+
+    /**
+     * Get the saw hasil details of model.
+     */
+    public function sawHasilDetails()
+    {
+        return $this->hasMany(SawHasilDetail::class);
+    }
 }

@@ -55,7 +55,7 @@
                                     </td>
                                     <td>{{ $lamaran->diverifikasi_pada ? date("Y-m-d H:i:s", strtotime($lamaran->diverifikasi_pada." +7 hours")) : '-' }}</td>
                                     <td>{{ $lamaran->diverifikasiOleh ? $lamaran->diverifikasiOleh->name : '-' }}</td>
-                                    <td>{{ $lamaran->alasan_diverifikasi ? $lamaran->catatan_diverifikasi : '-' }}</td>
+                                    <td>{{ $lamaran->catatan_diverifikasi ? $lamaran->catatan_diverifikasi : '-' }}</td>
                                     <td>
                                         <button class="btn btn-danger" title="Tolak" data-toggle="modal" data-target="#tolak{{$lamaran->id}}"><i class="fa fa-times"></i></button>
                                         <button class="btn btn-success" title="Terima" data-toggle="modal" data-target="#terima{{$lamaran->id}}"><i class="fa fa-check"></i></button>

@@ -23,6 +23,9 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware(['role:admin'])->group(function () {
+    // Profile
+    Route::get('/profile', 'PelamarController@showProfile');
+
     // Perusahaan
     Route::get('/perusahaan', 'PerusahaanController@index');
     Route::post('/perusahaan', 'PerusahaanController@store');
@@ -93,20 +96,32 @@ Route::middleware(['role:admin'])->group(function () {
 });
 
 Route::middleware(['role:pelamar'])->group(function () {
+    // Profile
+    Route::get('/profile', 'Pelamar\PelamarController@showProfile');
+    // Pelamar
+    Route::post('/pelamar/update/{id}', 'Pelamar\PelamarController@updateProfile');
+
     Route::group(['namespace' => 'Pelamar', 'prefix' => 'pelamar'], function () {
+        // Pekerjaan
+        Route::group(['prefix' => 'pekerjaan'], function () {
+            Route::get('/', 'PekerjaanController@index');
+            Route::post('/lamar', 'LamaranController@store');
+        });
+
+        // Lamaran
+        Route::group(['prefix' => 'lamaran'], function () {
+            Route::get('/', 'LamaranController@index');
+            Route::get('/hasil', 'LamaranController@hasil');
+        });
+
         // Tes
         Route::group(['prefix' => 'tes'], function () {
             // Soal
-            Route::get('/soal', 'SoalController@index');
-            Route::post('/soal', 'SoalController@store');
-            Route::post('/soal/update/{id}', 'SoalController@update');
-            Route::post('/soal/delete/{id}', 'SoalController@destroy');
+            Route::get('/soal/{kriteria_id}/{lamaran_id}', 'SoalController@index');
+            Route::post('/soal/{kriteria_id}/{lamaran_id}/selesai', 'SoalController@selesai');
 
             // Hasil
             Route::get('/hasil', 'SawHasilController@index');
-            Route::post('/hasil', 'SawHasilController@store');
-            Route::post('/hasil/update/{id}', 'SawHasilController@update');
-            Route::post('/hasil/delete/{id}', 'SawHasilController@destroy');
         });
     });
 });

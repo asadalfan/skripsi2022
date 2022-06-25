@@ -14,7 +14,9 @@
         <div class="card-header">
             <div class="d-flex justify-content-between">
                 <h3>Pelamar</h3>
+                @if (Auth::user()->type == 'admin')
                 <button class="btn btn-primary" data-toggle="modal" data-target="#tambahModal">Tambah</button>
+                @endif
             </div>
         </div>
         <div class="card-body">
@@ -48,7 +50,9 @@
                                     <td>{{ date("Y-m-d H:i:s", strtotime($pelamar->updated_at." +7 hours")) }}</td>
                                     <td>
                                         <button class="btn btn-warning" data-toggle="modal" data-target="#editModal{{$pelamar->id}}">Edit</button>
+                                        @if (Auth::user()->type == 'admin')
                                         <button class="btn btn-danger" data-toggle="modal" data-target="#hapusModal{{$pelamar->id}}">Hapus</button>
+                                        @endif
                                     </td>
                                 </tr>
 
