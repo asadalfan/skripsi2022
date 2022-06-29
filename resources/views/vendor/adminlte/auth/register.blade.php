@@ -95,7 +95,7 @@
             <div class="form-group w-100">
                 <label for="name">Sebagai</label>
                 <select class="form-control" name="type" required>
-                    @foreach ($userTypes as $userType)
+                    @foreach (['pelamar', 'HRD'] as $userType)
                     <option value="{{ $userType }}">{{ ucfirst($userType) }}</option>
                     @endforeach
                 </select>
