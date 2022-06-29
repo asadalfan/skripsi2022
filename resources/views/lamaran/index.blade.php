@@ -10,6 +10,10 @@
 @stop
 
 @section('content')
+@php
+$userType = Auth::user()->type;
+$url = $userType != 'admin' ? $userType . '/' : '';
+@endphp
 <div class="container-fluid">
     <div class="card">
         <div class="card-header">
@@ -74,7 +78,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form action="{{ url('lamaran/update/' . $lamaran->id) }}" method="POST" enctype="multipart/form-data">
+                                            <form action="{{ url($url . 'lamaran/update/' . $lamaran->id) }}" method="POST" enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="modal-body">
                                                     <div class="form-group">
@@ -129,7 +133,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form action="{{ url('lamaran/delete/' . $lamaran->id) }}" method="POST">
+                                            <form action="{{ url($url . 'lamaran/delete/' . $lamaran->id) }}" method="POST">
                                                 @csrf
                                                 <div class="modal-body">
                                                     Apakah anda yakin ingin menghapus Lamaran ini?
@@ -168,7 +172,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ url('lamaran') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ url($url . 'lamaran') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">

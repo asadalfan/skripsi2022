@@ -67,7 +67,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form action="{{ url('tes/hasil/update/' . $hasil->id) }}" method="POST">
+                                            <form action="{{ url($url . 'tes/hasil/update/' . $hasil->id) }}" method="POST">
                                                 @csrf
                                                 <div class="modal-body">
                                                     <div class="form-group mb-0">

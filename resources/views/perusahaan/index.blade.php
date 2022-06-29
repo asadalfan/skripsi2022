@@ -10,6 +10,10 @@
 @stop
 
 @section('content')
+@php
+$userType = Auth::user()->type;
+$url = $userType != 'admin' ? $userType . '/' : '';
+@endphp
 <div class="container-fluid">
     <div class="card">
         <div class="card-header">
@@ -65,7 +69,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form action="{{ url('perusahaan/update/' . $perusahaan->id) }}" method="POST">
+                                            <form action="{{ url($url . 'perusahaan/update/' . $perusahaan->id) }}" method="POST">
                                                 @csrf
                                                 <div class="modal-body">
                                                     <div class="form-group">
@@ -99,7 +103,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form action="{{ url('perusahaan/delete/' . $perusahaan->id) }}" method="POST">
+                                            <form action="{{ url($url . 'perusahaan/delete/' . $perusahaan->id) }}" method="POST">
                                                 @csrf
                                                 <div class="modal-body">
                                                     Apakah anda yakin ingin menghapus Perusahaan ini?
@@ -136,7 +140,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ url('perusahaan') }}" method="POST">
+            <form action="{{ url($url . 'perusahaan') }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">

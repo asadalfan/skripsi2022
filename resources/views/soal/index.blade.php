@@ -10,6 +10,10 @@
 @stop
 
 @section('content')
+@php
+$userType = Auth::user()->type;
+$url = $userType != 'admin' ? $userType . '/' : '';
+@endphp
 <div class="container-fluid">
     <div class="card">
         <div class="card-header">
@@ -21,7 +25,7 @@
         <div class="card-body">
             <div class="row mb-3">
                 <div class="col">
-                    <form class="form-inline" action="{{ url('tes/soal') }}" method="GET">
+                    <form class="form-inline" action="{{ url($url . 'tes/soal') }}" method="GET">
                         @csrf
                         <div class="form-group mb-0 mr-2">
                             <label for="pencarian">Pencarian : </label>
@@ -84,7 +88,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form action="{{ url('tes/soal/update/' . $soal->id) }}" method="POST">
+                                            <form action="{{ url($url . 'tes/soal/update/' . $soal->id) }}" method="POST">
                                                 @csrf
                                                 <div class="modal-body">
                                                     <div class="form-group">
@@ -164,7 +168,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form action="{{ url('tes/soal/delete/' . $soal->id) }}" method="POST">
+                                            <form action="{{ url($url . 'tes/soal/delete/' . $soal->id) }}" method="POST">
                                                 @csrf
                                                 <div class="modal-body">
                                                     Apakah anda yakin ingin menghapus Soal ini?
@@ -201,7 +205,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ url('tes/soal') }}" method="POST">
+            <form action="{{ url($url . 'tes/soal') }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">

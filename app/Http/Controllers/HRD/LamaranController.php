@@ -5,7 +5,6 @@ namespace App\Http\Controllers\HRD;
 use App\Http\Controllers\LamaranController as App;
 use App\Lamaran;
 use App\Pekerjaan;
-use App\Pelamar;
 use Illuminate\Http\Request;
 
 class LamaranController extends App

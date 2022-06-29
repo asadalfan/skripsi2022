@@ -10,13 +10,17 @@
 @stop
 
 @section('content')
+@php
+$userType = Auth::user()->type;
+$url = $userType != 'admin' ? $userType . '/' : '';
+@endphp
 <div class="container-fluid">
     <div class="card">
         <div class="card-header">
             <div class="d-flex justify-content-between">
                 <h3>Peringkat</h3>
                 @if (Auth::user()->type != 'admin')
-                <a href="{{ url('tes/peringkat/hitung') }}" class="btn btn-primary">Update Peringkat</a>
+                <a href="{{ url($url . 'tes/peringkat/hitung') }}" class="btn btn-primary">Update Peringkat</a>
                 @endif
             </div>
         </div>

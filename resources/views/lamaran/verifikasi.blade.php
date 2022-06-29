@@ -10,6 +10,10 @@
 @stop
 
 @section('content')
+@php
+$userType = Auth::user()->type;
+$url = $userType != 'admin' ? $userType . '/' : '';
+@endphp
 <div class="container-fluid">
     <div class="card">
         <div class="card-header">
@@ -72,7 +76,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form action="{{ url('lamaran/' . $lamaran->id) . '/unverified' }}" method="POST">
+                                            <form action="{{ url($url . 'lamaran/' . $lamaran->id) . '/unverified' }}" method="POST">
                                                 @csrf
                                                 <div class="modal-body">
                                                     <div class="form-group">
@@ -101,7 +105,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form action="{{ url('lamaran/' . $lamaran->id) . '/verified' }}" method="POST">
+                                            <form action="{{ url($url . 'lamaran/' . $lamaran->id) . '/verified' }}" method="POST">
                                                 @csrf
                                                 <div class="modal-body">
                                                     <div class="form-group">
