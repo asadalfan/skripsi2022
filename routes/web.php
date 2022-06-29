@@ -180,15 +180,3 @@ Route::middleware(['role:HRD'])->group(function () {
         });
     });
 });
-
-Route::middleware(['role:tim-seleksi'])->group(function () {
-    Route::group(['namespace' => 'TimSeleksi', 'prefix' => 'tim-seleksi'], function () {
-        // Pekerjaan
-        Route::group(['prefix' => 'pekerjaan'], function () {
-            // Pekerjaan Verifikasi
-            Route::get('/verifikasi', 'PekerjaanController@verifikasiTimSeleksi');
-            Route::post('/{id}/verified', 'PekerjaanController@verifiedTimSeleksi');
-            Route::post('/{id}/unverified', 'PekerjaanController@unverifiedTimSeleksi');
-        });
-    });
-});
