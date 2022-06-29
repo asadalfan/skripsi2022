@@ -25,7 +25,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>ID Lamaran</th>
+                                    <th>Pekerjaan</th>
                                     <th>Pelamar</th>
                                     <th>Status</th>
                                     <th>Diterima/Ditolak pada</th>
@@ -42,7 +42,7 @@
                                 @foreach ($lamarans as $lamaran)
                                 <tr>
                                     <td>{{ ++$number }}</td>
-                                    <td>{{ $lamaran->id }}</td>
+                                    <td>{{ $lamaran->pekerjaan->name }}</td>
                                     <td>{{ $lamaran->pelamar->user->name }}</td>
                                     <td>
                                         @if ($lamaran->diterima)

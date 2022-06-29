@@ -16,7 +16,7 @@ class PekerjaanController extends App
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($userType = '')
     {
         $perusahaans = Perusahaan::all();
         $lamarans = Lamaran::where('pelamar_id', Auth::user()->pelamar->id)->get('pekerjaan_id');

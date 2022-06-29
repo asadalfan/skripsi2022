@@ -15,7 +15,9 @@
         <div class="card-header">
             <div class="d-flex justify-content-between">
                 <h3>Peringkat</h3>
+                @if (Auth::user()->type != 'admin')
                 <a href="{{ url('tes/peringkat/hitung') }}" class="btn btn-primary">Update Peringkat</a>
+                @endif
             </div>
         </div>
         <div class="card-body">

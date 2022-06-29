@@ -86,17 +86,6 @@ class PelamarController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     */
-    public function showProfile()
-    {
-        $pelamars = Pelamar::with(['user'])->where('user_id', \Auth::user()->id)->get();
-
-        return view('pelamar/index', compact('pelamars'));
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id

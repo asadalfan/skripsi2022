@@ -22,21 +22,30 @@ Auth::routes();
 // Dashboard
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::middleware(['role:admin'])->group(function () {
-    // Profile
-    Route::get('/profile', 'PelamarController@showProfile');
-
-    // Perusahaan
-    Route::get('/perusahaan', 'PerusahaanController@index');
-    Route::post('/perusahaan', 'PerusahaanController@store');
-    Route::post('/perusahaan/update/{id}', 'PerusahaanController@update');
-    Route::post('/perusahaan/delete/{id}', 'PerusahaanController@destroy');
-
+Route::middleware(['role:admin,HRD'])->group(function () {
     // Kategori
     Route::get('/kategori', 'TagController@index');
     Route::post('/kategori', 'TagController@store');
     Route::post('/kategori/update/{id}', 'TagController@update');
     Route::post('/kategori/delete/{id}', 'TagController@destroy');
+});
+
+Route::middleware(['role:admin,tim-seleksi'])->group(function () {
+    // Pekerjaan
+    Route::group(['prefix' => 'pekerjaan'], function () {
+        // Pekerjaan Verifikasi
+        Route::get('/verifikasi', 'PekerjaanController@verifikasi');
+        Route::post('/{id}/verified', 'PekerjaanController@verified');
+        Route::post('/{id}/unverified', 'PekerjaanController@unverified');
+    });
+});
+
+Route::middleware(['role:admin'])->group(function () {
+    // Perusahaan
+    Route::get('/perusahaan', 'PerusahaanController@index');
+    Route::post('/perusahaan', 'PerusahaanController@store');
+    Route::post('/perusahaan/update/{id}', 'PerusahaanController@update');
+    Route::post('/perusahaan/delete/{id}', 'PerusahaanController@destroy');
 
     // Pekerjaan
     Route::group(['prefix' => 'pekerjaan'], function () {
@@ -44,11 +53,6 @@ Route::middleware(['role:admin'])->group(function () {
         Route::post('/', 'PekerjaanController@store');
         Route::post('/update/{id}', 'PekerjaanController@update');
         Route::post('/delete/{id}', 'PekerjaanController@destroy');
-
-        // Pekerjaan Verifikasi
-        Route::get('/verifikasi', 'PekerjaanController@verifikasi');
-        Route::post('/{id}/verified', 'PekerjaanController@verified');
-        Route::post('/{id}/unverified', 'PekerjaanController@unverified');
     });
 
     // Pelamar
@@ -98,6 +102,7 @@ Route::middleware(['role:admin'])->group(function () {
 Route::middleware(['role:pelamar'])->group(function () {
     // Profile
     Route::get('/profile', 'Pelamar\PelamarController@showProfile');
+
     // Pelamar
     Route::post('/pelamar/update/{id}', 'Pelamar\PelamarController@updateProfile');
 
@@ -122,6 +127,68 @@ Route::middleware(['role:pelamar'])->group(function () {
 
             // Hasil
             Route::get('/hasil', 'SawHasilController@index');
+        });
+    });
+});
+
+Route::middleware(['role:HRD'])->group(function () {
+    Route::group(['namespace' => 'HRD', 'prefix' => 'HRD'], function () {
+        // Perusahaan
+        Route::get('/perusahaan', 'PerusahaanController@index');
+        Route::post('/perusahaan', 'PerusahaanController@storeHRD');
+        Route::post('/perusahaan/update/{id}', 'PerusahaanController@updateHRD');
+        Route::post('/perusahaan/delete/{id}', 'PerusahaanController@destroyHRD');
+
+        // Pekerjaan
+        Route::group(['prefix' => 'pekerjaan'], function () {
+            Route::get('/', 'PekerjaanController@index');
+            Route::post('/', 'PekerjaanController@storeHRD');
+            Route::post('/update/{id}', 'PekerjaanController@updateHRD');
+            Route::post('/delete/{id}', 'PekerjaanController@destroyHRD');
+        });
+
+        // Lamaran
+        Route::group(['prefix' => 'lamaran'], function () {
+            Route::get('/', 'LamaranController@index');
+
+            // Lamaran Verifikasi
+            Route::get('/verifikasi', 'LamaranController@verifikasi');
+            Route::post('/{id}/verified', 'LamaranController@verifiedHRD');
+            Route::post('/{id}/unverified', 'LamaranController@unverifiedHRD');
+
+            // Lamaran Hasil
+            Route::get('/hasil', 'LamaranController@hasil');
+            Route::post('/{id}/terima', 'LamaranController@terimaHRD');
+            Route::post('/{id}/tolak', 'LamaranController@tolakHRD');
+        });
+
+        // Tes
+        Route::group(['prefix' => 'tes'], function () {
+            // Soal
+            Route::get('/soal', 'SoalController@index');
+            Route::post('/soal', 'SoalController@storeHRD');
+            Route::post('/soal/update/{id}', 'SoalController@updateHRD');
+            Route::post('/soal/delete/{id}', 'SoalController@destroyHRD');
+
+            // Hasil
+            Route::get('/hasil', 'SawHasilController@index');
+            Route::post('/hasil/update/{id}', 'SawHasilController@updateHRD');
+
+            // Peringkat
+            Route::get('/peringkat', 'SawHasilController@showPeringkat');
+            Route::get('/peringkat/hitung', 'SawHasilController@hitungPeringkat');
+        });
+    });
+});
+
+Route::middleware(['role:tim-seleksi'])->group(function () {
+    Route::group(['namespace' => 'TimSeleksi', 'prefix' => 'tim-seleksi'], function () {
+        // Pekerjaan
+        Route::group(['prefix' => 'pekerjaan'], function () {
+            // Pekerjaan Verifikasi
+            Route::get('/verifikasi', 'PekerjaanController@verifikasiTimSeleksi');
+            Route::post('/{id}/verified', 'PekerjaanController@verifiedTimSeleksi');
+            Route::post('/{id}/unverified', 'PekerjaanController@unverifiedTimSeleksi');
         });
     });
 });

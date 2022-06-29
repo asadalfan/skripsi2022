@@ -44,10 +44,12 @@
                                 <tr>
                                     <td>{{ ++$number }}</td>
                                     <td>{{ $pekerjaan->user ? $pekerjaan->user->name : '-' }}</td>
-                                    <td class="d-inline-block">
+                                    <td>
                                         {{ $pekerjaan->name }}
                                         @if($pekerjaan->diverifikasi)
-                                        <i class="fa fa-check-circle text-small text-primary align-top" title="Terverifikasi"></i>
+                                        <i class="fa fa-check-circle text-small text-primary align-top" title="Lolos Verifikasi"></i>
+                                        @else if(! $pekerjaan->diverifikasi && $pekerjaan->diverifikasi_pada)
+                                        <i class="fa fa-exclamation-circle text-small text-danger align-top" title="Tidak Lolos Verifikasi"></i>
                                         @endif
                                     </td>
                                     <td>{{ $pekerjaan->description ?? '-' }}</td>

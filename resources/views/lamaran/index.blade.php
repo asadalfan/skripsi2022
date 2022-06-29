@@ -15,7 +15,9 @@
         <div class="card-header">
             <div class="d-flex justify-content-between">
                 <h3>Lamaran</h3>
+                @if (Auth::user()->type == 'admin')
                 <button class="btn btn-primary" data-toggle="modal" data-target="#tambahModal">Tambah</button>
+                @endif
             </div>
         </div>
         <div class="card-body">
@@ -31,7 +33,9 @@
                                     <th>CV</th>
                                     <th>Dibuat pada</th>
                                     <th>Diperbarui pada</th>
+                                    @if (Auth::user()->type == 'admin')
                                     <th>Aksi</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -51,12 +55,15 @@
                                     </td>
                                     <td>{{ date("Y-m-d H:i:s", strtotime($lamaran->created_at." +7 hours")) }}</td>
                                     <td>{{ date("Y-m-d H:i:s", strtotime($lamaran->updated_at." +7 hours")) }}</td>
+                                    @if (Auth::user()->type == 'admin')
                                     <td>
                                         <button class="btn btn-warning" data-toggle="modal" data-target="#editModal{{$lamaran->id}}">Edit</button>
                                         <button class="btn btn-danger" data-toggle="modal" data-target="#hapusModal{{$lamaran->id}}">Hapus</button>
                                     </td>
+                                    @endif
                                 </tr>
 
+                                @if (Auth::user()->type == 'admin')
                                 <!-- Edit Modal -->
                                 <div class="modal fade" id="editModal{{$lamaran->id}}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
@@ -134,6 +141,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                @endif
                                 @endforeach
                                 @else
                                 <tr>
@@ -149,6 +157,7 @@
     </div>
 </div>
 
+@if (Auth::user()->type == 'admin')
 <!-- Tambah Modal -->
 <div class="modal fade" id="tambahModal" tabindex="-1" role="dialog" aria-labelledby="tambahModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -198,6 +207,7 @@
         </div>
     </div>
 </div>
+@endif
 @stop
 
 @section('css')

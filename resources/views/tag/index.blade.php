@@ -29,7 +29,9 @@
                                     <th>Nama</th>
                                     <th>Dibuat pada</th>
                                     <th>Diperbarui pada</th>
+                                    @if(Auth::user()->type == 'admin')
                                     <th>Aksi</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -43,10 +45,12 @@
                                     <td>{{ $tag->name }}</td>
                                     <td>{{ date("Y-m-d H:i:s", strtotime($tag->created_at." +7 hours")) }}</td>
                                     <td>{{ date("Y-m-d H:i:s", strtotime($tag->updated_at." +7 hours")) }}</td>
+                                    @if(Auth::user()->type == 'admin')
                                     <td>
                                         <button class="btn btn-warning" data-toggle="modal" data-target="#editModal{{$tag->id}}">Edit</button>
                                         <button class="btn btn-danger" data-toggle="modal" data-target="#hapusModal{{$tag->id}}">Hapus</button>
                                     </td>
+                                    @endif
                                 </tr>
 
                                 <!-- Edit Modal -->

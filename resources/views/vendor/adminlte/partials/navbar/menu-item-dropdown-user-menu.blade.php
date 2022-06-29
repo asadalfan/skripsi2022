@@ -62,7 +62,7 @@
 
         {{-- User menu footer --}}
         <li class="user-footer">
-            @if($profile_url)
+            @if($profile_url && Auth::user()->type == 'pelamar')
                 <a href="{{ $profile_url }}" class="btn btn-default btn-flat">
                     <i class="fa fa-fw fa-user text-lightblue"></i>
                     {{ __('adminlte::menu.profile') }}

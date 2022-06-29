@@ -43,10 +43,12 @@
                                 <tr>
                                     <td>{{ ++$number }}</td>
                                     <td>{{ $pekerjaan->user ? $pekerjaan->user->name : '-' }}</td>
-                                    <td class="d-inline-block">
+                                    <td>
                                         {{ $pekerjaan->name }}
                                         @if($pekerjaan->diverifikasi)
-                                        <i class="fa fa-check-circle text-small text-primary align-top" title="Terverifikasi"></i>
+                                        <i class="fa fa-check-circle text-small text-primary align-top" title="Lolos Verifikasi"></i>
+                                        @elseif(! $pekerjaan->diverifikasi && $pekerjaan->diverifikasi_pada)
+                                        <i class="fa fa-exclamation-circle text-small text-danger align-top" title="Tidak Lolos Verifikasi"></i>
                                         @endif
                                     </td>
                                     <td>{{ $pekerjaan->description ?? '-' }}</td>
@@ -155,7 +157,7 @@
     for (let i = 1; i <= <?php echo count($pekerjaans); ?>; i++) {
         $('#cv_input' + i).on('change', function() {
             var fileName = document.getElementById("cv_input" + i).files[0].name;
-            var nextSibling = document.getElementById("cv_input_label"+i);
+            var nextSibling = document.getElementById("cv_input_label" + i);
             nextSibling.innerText = fileName;
         });
     }

@@ -87,7 +87,7 @@
                                             <form action="{{ url('tes/soal/update/' . $soal->id) }}" method="POST">
                                                 @csrf
                                                 <div class="modal-body">
-                                                    <div class="form-group mb-0">
+                                                    <div class="form-group">
                                                         <label for="type">Kriteria</label>
                                                     </div>
                                                     <select class="custom-select" name="saw_kriteria_id" id="inputGroupSelect01">
@@ -95,7 +95,10 @@
                                                         <option {{ $soal->saw_kriteria_id == $saw_kriteria->id ? 'selected' : '' }} value="{{ $saw_kriteria->id }}">{{ $saw_kriteria->nama }}</option>
                                                         @endforeach
                                                     </select>
-                                                    <select class="custom-select mt-3" name="pekerjaan_id" id="inputGroupSelect01">
+                                                    <div class="form-group mt-3">
+                                                        <label for="type">Pekerjaan</label>
+                                                    </div>
+                                                    <select class="custom-select" name="pekerjaan_id" id="inputGroupSelect01">
                                                         @foreach ($pekerjaans as $pekerjaan)
                                                         <option {{ $soal->pekerjaan_id == $pekerjaan->id ? 'selected' : '' }} value="{{ $pekerjaan->id }}">{{ $pekerjaan->name }}</option>
                                                         @endforeach
@@ -201,7 +204,7 @@
             <form action="{{ url('tes/soal') }}" method="POST">
                 @csrf
                 <div class="modal-body">
-                    <div class="form-group mb-0">
+                    <div class="form-group">
                         <label for="type">Kriteria</label>
                     </div>
                     <select class="custom-select" name="saw_kriteria_id" id="inputGroupSelect01" required>
@@ -209,7 +212,10 @@
                         <option value="{{ $saw_kriteria->id }}">{{ $saw_kriteria->nama }}</option>
                         @endforeach
                     </select>
-                    <select class="custom-select mt-3" name="pekerjaan_id" id="inputGroupSelect01" required>
+                    <div class="form-group mt-3">
+                        <label for="type">Pekerjaan</label>
+                    </div>
+                    <select class="custom-select" name="pekerjaan_id" id="inputGroupSelect01" required>
                         @foreach ($pekerjaans as $pekerjaan)
                         <option value="{{ $pekerjaan->id }}">{{ $pekerjaan->name }}</option>
                         @endforeach

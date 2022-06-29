@@ -1,27 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\HRD;
 
-use App\Fuzzy;
 use Illuminate\Http\Request;
+use App\Http\Controllers\SawHasilController as App;
+use App\Fuzzy;
 use App\SawHasil;
 use App\SawKriteria;
 use App\Lamaran;
 use App\SawPeringkat;
 use Illuminate\Support\Facades\DB;
 
-class SawHasilController extends Controller
+class SawHasilController extends App
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -29,12 +20,25 @@ class SawHasilController extends Controller
      */
     public function index()
     {
+        $userId = \Auth::id();
         $hasils = SawHasil::with([
-            'lamaran.pelamar.user',
-            'sawKriteria',
-        ])->get();
+                'lamaran.pelamar.user',
+                'sawKriteria',
+            ])
+            ->whereHas(
+                'lamaran.pekerjaan', function($query) use ($userId) {
+                    $query->where('user_id', $userId);
+                }
+            )
+            ->get();
         $saw_kriterias = SawKriteria::all();
-        $lamarans = Lamaran::with(['pelamar.user'])->get();
+        $lamarans = Lamaran::with(['pelamar.user'])
+            ->whereHas(
+                'pekerjaan', function($query) use ($userId) {
+                    $query->where('user_id', $userId);
+                }
+            )
+            ->get();
 
         return view('soal/hasil', compact(['hasils', 'saw_kriterias', 'lamarans']));
     }
@@ -46,12 +50,18 @@ class SawHasilController extends Controller
      */
     public function showPeringkat()
     {
+        $userId = \Auth::id();
         $peringkats = SawPeringkat::with([
-            'lamaran.pelamar.user',
-            'lamaran.sawHasils',
-        ])
-        ->orderBy('nilai', 'desc')
-        ->get();
+                'lamaran.pelamar.user',
+                'lamaran.sawHasils',
+            ])
+            ->whereHas(
+                'lamaran.pekerjaan', function($query) use ($userId) {
+                    $query->where('user_id', $userId);
+                }
+            )
+            ->orderBy('nilai', 'desc')
+            ->get();
         $saw_kriterias = SawKriteria::all();
 
         return view('soal/peringkat', compact(['peringkats', 'saw_kriterias']));
@@ -64,25 +74,43 @@ class SawHasilController extends Controller
      */
     public function hitungPeringkat()
     {
+        $userId = \Auth::id();
         $alternatives = Lamaran::with([
-            'pelamar.user',
-            'sawHasils',
-        ])->get();
+                'pelamar.user',
+                'sawHasils',
+            ])
+            ->whereHas(
+                'pekerjaan',
+                function ($query) use ($userId) {
+                    $query->where('user_id', $userId);
+                }
+            )
+            ->get();
         $totalBobot = SawKriteria::select(
             DB::raw('sum(bobot) as bobot')
         )->first()->bobot;
         $nilaiMax = SawHasil::select(
-            DB::raw('max(nilai) as nilai'),
-            'saw_kriterias.bobot as bobot',
-            'saw_kriteria_id'
-        )
-        ->join('saw_kriterias', 'saw_hasils.saw_kriteria_id', 'saw_kriterias.id')
-        ->groupBy('saw_kriteria_id', 'bobot')
-        ->get();
+                DB::raw('max(nilai) as nilai'),
+                'saw_kriterias.bobot as bobot',
+                'saw_kriteria_id'
+            )
+            ->whereHas(
+                'lamaran.pekerjaan', function($query) use ($userId) {
+                    $query->where('user_id', $userId);
+                }
+            )
+            ->join('saw_kriterias', 'saw_hasils.saw_kriteria_id', 'saw_kriterias.id')
+            ->groupBy('saw_kriteria_id', 'bobot')
+            ->get();
         $fuzzies = Fuzzy::all();
 
         try {
-            SawPeringkat::truncate(); // Mengosongkan Data
+            SawPeringkat::whereHas(
+                    'lamaran.pekerjaan', function($query) use ($userId) {
+                        $query->where('user_id', $userId);
+                    }
+                )
+                ->delete(); // Mengosongkan Data
             foreach ($alternatives as $alternative) {
                 // Normalisasi
                 $saw_normalisasi = [];
@@ -124,36 +152,7 @@ class SawHasilController extends Controller
             //throw $th;
         }
 
-        return redirect('tes/peringkat');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'saw_kriteria_id' => 'nullable|exists:saw_kriterias,id',
-            'lamaran_id' => 'nullable|exists:lamarans,id',
-            'nilai' => 'required',
-        ]);
-
-        if ($hasil = SawHasil::where('lamaran_id', $data['lamaran_id'])
-        ->where('saw_kriteria_id', $data['saw_kriteria_id'])->first())
-        {
-            return $this->update($request, $hasil->id);
-        }
-
-        try {
-            $soal = SawHasil::create($data);
-        } catch (Exception $e) {
-            abort(422, 'Gagal menyimpan hasil baru.');
-        }
-
-        return redirect('tes/hasil');
+        return redirect('HRD/tes/peringkat');
     }
 
     /**
@@ -163,45 +162,8 @@ class SawHasilController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id, $userType = '')
+    public function updateHRD(Request $request, $id)
     {
-        $data = $request->validate([
-            'saw_kriteria_id' => 'nullable|exists:saw_kriterias,id',
-            'lamaran_id' => 'nullable|exists:lamarans,id',
-            'nilai' => 'required',
-        ]);
-
-        try {
-            if (! $hasil = SawHasil::find($id)) {
-                abort(422, 'Hasil tidak ditemukan.');
-            }
-
-            $hasil->saw_kriteria_id = $data['saw_kriteria_id'];
-            $hasil->lamaran_id = $data['lamaran_id'];
-            $hasil->nilai = $data['nilai'];
-
-            $hasil->save();
-        } catch (Exception $e) {
-            abort(422, 'Gagal mengupdate soal baru.');
-        }
-
-        return redirect($userType . '/tes/hasil');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        try {
-            SawHasil::where('id', $id)->delete();
-        } catch (Exception $e) {
-            abort(422, 'Gagal menghapus data.');
-        }
-
-        return redirect('tes/hasil');
+        return $this->update($request, $id, \Auth::user()->type);
     }
 }

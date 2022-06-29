@@ -36,22 +36,12 @@ class PekerjaanController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $userType = '')
     {
         $data = $request->validate([
             'perusahaan_id' => 'required|exists:perusahaans,id',
@@ -76,29 +66,7 @@ class PekerjaanController extends Controller
             abort(422, 'Gagal menyimpan pekerjaan baru.');
         }
 
-        return redirect('pekerjaan');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return redirect($userType . '/pekerjaan');
     }
 
     /**
@@ -108,7 +76,7 @@ class PekerjaanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, $userType = '')
     {
         $data = $request->validate([
             'perusahaan_id' => 'required|exists:perusahaans,id',
@@ -139,7 +107,7 @@ class PekerjaanController extends Controller
             abort(422, 'Gagal mengupdate pekerjaan.');
         }
 
-        return redirect('pekerjaan');
+        return redirect($userType . '/pekerjaan');
     }
 
     /**
@@ -148,7 +116,7 @@ class PekerjaanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, $userType = '')
     {
         try {
             Pekerjaan::where('id', $id)->delete();
@@ -157,7 +125,7 @@ class PekerjaanController extends Controller
             abort(422, 'Gagal menghapus data.');
         }
 
-        return redirect('pekerjaan');
+        return redirect($userType . '/pekerjaan');
     }
 
     /**

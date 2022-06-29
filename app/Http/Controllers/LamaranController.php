@@ -40,16 +40,6 @@ class LamaranController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -84,28 +74,6 @@ class LamaranController extends Controller
         }
 
         return redirect('lamaran');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -184,7 +152,7 @@ class LamaranController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function verified(Request $request, $id)
+    public function verified(Request $request, $id, $userType = '')
     {
         $data = $request->validate([
             'catatan_diverifikasi' => 'nullable|string',
@@ -202,7 +170,7 @@ class LamaranController extends Controller
             abort(422, 'Gagal memverifikasi lamaran.');
         }
 
-        return redirect('lamaran/verifikasi');
+        return redirect($userType . '/lamaran/verifikasi');
     }
 
     /**
@@ -211,7 +179,7 @@ class LamaranController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function unverified(Request $request, $id)
+    public function unverified(Request $request, $id, $userType = '')
     {
         $data = $request->validate([
             'catatan_diverifikasi' => 'nullable|string',
@@ -229,7 +197,7 @@ class LamaranController extends Controller
             abort(422, 'Gagal mengunverifikasi lamaran.');
         }
 
-        return redirect('lamaran/verifikasi');
+        return redirect($userType . '/lamaran/verifikasi');
     }
 
     /**
@@ -254,7 +222,7 @@ class LamaranController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function terima(Request $request, $id)
+    public function terima(Request $request, $id, $userType = '')
     {
         $data = $request->validate([
             'alasan_diterima' => 'nullable|string',
@@ -272,7 +240,7 @@ class LamaranController extends Controller
             abort(422, 'Gagal menerima lamaran.');
         }
 
-        return redirect('lamaran/hasil');
+        return redirect($userType . '/lamaran/hasil');
     }
 
     /**
@@ -281,7 +249,7 @@ class LamaranController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function tolak(Request $request, $id)
+    public function tolak(Request $request, $id, $userType = '')
     {
         $data = $request->validate([
             'alasan_diterima' => 'nullable|string',
@@ -299,6 +267,6 @@ class LamaranController extends Controller
             abort(422, 'Gagal menolak lamaran.');
         }
 
-        return redirect('lamaran/hasil');
+        return redirect($userType . '/lamaran/hasil');
     }
 }
