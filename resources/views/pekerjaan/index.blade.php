@@ -52,7 +52,7 @@ $url = $userType != 'admin' ? $userType . '/' : '';
                                         {{ $pekerjaan->name }}
                                         @if($pekerjaan->diverifikasi)
                                         <i class="fa fa-check-circle text-small text-primary align-top" title="Lolos Verifikasi"></i>
-                                        @else if(! $pekerjaan->diverifikasi && $pekerjaan->diverifikasi_pada)
+                                        @elseif(! $pekerjaan->diverifikasi && $pekerjaan->diverifikasi_pada)
                                         <i class="fa fa-exclamation-circle text-small text-danger align-top" title="Tidak Lolos Verifikasi"></i>
                                         @endif
                                     </td>
