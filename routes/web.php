@@ -41,6 +41,14 @@ Route::middleware(['role:admin,tim-seleksi'])->group(function () {
 });
 
 Route::middleware(['role:admin'])->group(function () {
+    // User
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('/', 'UserController@index');
+        Route::post('/', 'UserController@store');
+        Route::post('/update/{id}', 'UserController@update');
+        Route::post('/delete/{id}', 'UserController@destroy');
+    });
+
     // Perusahaan
     Route::get('/perusahaan', 'PerusahaanController@index');
     Route::post('/perusahaan', 'PerusahaanController@store');

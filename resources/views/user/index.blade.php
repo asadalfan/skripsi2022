@@ -1,27 +1,21 @@
 @extends('adminlte::page')
 
-@section('title', 'Hasil')
+@section('title', 'User')
 
 @section('content_header')
 <span>
-    Tes /
-    <a href="#" class="btn btn-link p-0">Hasil</a>
+    User /
+    <a href="#" class="btn btn-link p-0">User</a>
 </span>
 @stop
 
 @section('content')
-@php
-$userType = Auth::user()->type;
-$url = $userType != 'admin' ? $userType . '/' : '';
-@endphp
 <div class="container-fluid">
     <div class="card">
         <div class="card-header">
             <div class="d-flex justify-content-between">
-                <h3>Hasil</h3>
-                @if (Auth::user()->type == 'admin')
+                <h3>User</h3>
                 <button class="btn btn-primary" data-toggle="modal" data-target="#tambahModal">Tambah</button>
-                @endif
             </div>
         </div>
         <div class="card-body">
@@ -32,67 +26,65 @@ $url = $userType != 'admin' ? $userType . '/' : '';
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>ID Lamaran</th>
-                                    <th>Kriteria</th>
-                                    <th>Nilai</th>
+                                    <th>Nama</th>
+                                    <th>Email</th>
+                                    <th>Tipe</th>
                                     <th>Dibuat pada</th>
                                     <th>Diperbarui pada</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if(isset($hasils) && count($hasils) > 0)
+                                @if(isset($users) && count($users) > 0)
                                 @php
                                 $number = 0;
                                 @endphp
-                                @foreach ($hasils as $hasil)
+                                @foreach ($users as $user)
                                 <tr>
                                     <td>{{ ++$number }}</td>
-                                    <td>{{ $hasil->lamaran_id }} (lamaran dari {{ $hasil->lamaran->pelamar->user->name }})</td>
-                                    <td>{{ $hasil->sawKriteria->nama }}</td>
-                                    <td>{{ $hasil->nilai ?? '-' }}</td>
-                                    <td>{{ date("Y-m-d H:i:s", strtotime($hasil->created_at." +7 hours")) }}</td>
-                                    <td>{{ date("Y-m-d H:i:s", strtotime($hasil->updated_at." +7 hours")) }}</td>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>{{ $user->type }}</td>
+                                    <td>{{ date("Y-m-d H:i:s", strtotime($user->created_at." +7 hours")) }}</td>
+                                    <td>{{ date("Y-m-d H:i:s", strtotime($user->updated_at." +7 hours")) }}</td>
                                     <td>
-                                        <button class="btn btn-warning" data-toggle="modal" data-target="#editModal{{$hasil->id}}">Edit</button>
-                                        @if (Auth::user()->type == 'admin')
-                                        <button class="btn btn-danger" data-toggle="modal" data-target="#hapusModal{{$hasil->id}}">Hapus</button>
-                                        @endif
+                                        <button class="btn btn-warning" data-toggle="modal" data-target="#editModal{{$user->id}}">Edit</button>
+                                        <button class="btn btn-danger" data-toggle="modal" data-target="#hapusModal{{$user->id}}">Hapus</button>
                                     </td>
                                 </tr>
 
                                 <!-- Edit Modal -->
-                                <div class="modal fade" id="editModal{{$hasil->id}}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="editModal{{$user->id}}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="editModalLabel">Edit Hasil</h5>
+                                                <h5 class="modal-title" id="editModalLabel">Edit User</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form action="{{ url($url . 'tes/hasil/update/' . $hasil->id) }}" method="POST">
+                                            <form action="{{ url('user/update/' . $user->id) }}" method="POST">
                                                 @csrf
                                                 <div class="modal-body">
-                                                    <div class="form-group mb-0">
-                                                        <label for="lamaran_id">ID Lamaran</label>
+                                                    <div class="form-group">
+                                                        <label for="name">Tipe</label>
+                                                        <select class="form-control" name="type" required>
+                                                            @foreach ($types as $type)
+                                                            <option {{ $user->type == $type['value'] ? 'selected' : '' }} value="{{ $type['value'] }}">{{ $type['title'] }}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
-                                                    <select class="custom-select" name="lamaran_id" id="inputGroupSelect01">
-                                                        @foreach ($lamarans as $lamaran)
-                                                        <option {{ $hasil->lamaran_id == $lamaran->id ? 'selected' : '' }} value="{{ $lamaran->id }}">{{ $lamaran->id }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <div class="form-group mb-0 mt-3">
-                                                        <label for="saw_kriteria_id">Kriteria</label>
+                                                    <div class="form-group">
+                                                        <label for="name">Nama</label>
+                                                        <input type="name" class="form-control" name="name" placeholder="Nama User" required value="{{ $user->name }}">
                                                     </div>
-                                                    <select class="custom-select" name="saw_kriteria_id" id="inputGroupSelect01">
-                                                        @foreach ($saw_kriterias as $saw_kriteria)
-                                                        <option {{ $hasil->saw_kriteria_id == $saw_kriteria->id ? 'selected' : '' }} value="{{ $saw_kriteria->id }}">{{ $saw_kriteria->nama }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <div class="form-group mt-3">
-                                                        <label for="nilai">Nilai</label>
-                                                        <input type="number" class="form-control" step="0.001" name="nilai" placeholder="Nilai" required value="{{ $hasil->nilai }}">
+                                                    <div class="form-group">
+                                                        <label for="email">Email</label>
+                                                        <input type="email" class="form-control" name="email" placeholder="Email User" required value="{{ $user->email }}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="password">Password</label>
+                                                        <input type="password" class="form-control" name="password" placeholder="Password User">
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -104,19 +96,19 @@ $url = $userType != 'admin' ? $userType . '/' : '';
                                 </div>
 
                                 <!-- Hapus Modal -->
-                                <div class="modal fade" id="hapusModal{{$hasil->id}}" tabindex="-1" role="dialog" aria-labelledby="hapusModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="hapusModal{{$user->id}}" tabindex="-1" role="dialog" aria-labelledby="hapusModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="hapusModalLabel">Hapus Hasil</h5>
+                                                <h5 class="modal-title" id="hapusModalLabel">Hapus User</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form action="{{ url('tes/hasil/delete/' . $hasil->id) }}" method="POST">
+                                            <form action="{{ url('user/delete/' . $user->id) }}" method="POST">
                                                 @csrf
                                                 <div class="modal-body">
-                                                    Apakah anda yakin ingin menghapus Hasil ini?
+                                                    Apakah anda yakin ingin menghapus User ini?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="submit" class="btn btn-danger">Iya</button>
@@ -145,33 +137,33 @@ $url = $userType != 'admin' ? $userType . '/' : '';
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="tambahModalLabel">Tambah Hasil</h5>
+                <h5 class="modal-title" id="tambahModalLabel">Tambah User</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ url('tes/hasil') }}" method="POST">
+            <form action="{{ url('user') }}" method="POST">
                 @csrf
                 <div class="modal-body">
-                    <div class="form-group mb-0">
-                        <label for="lamaran_id">ID Lamaran</label>
+                    <div class="form-group">
+                        <label for="name">Tipe</label>
+                        <select class="form-control" name="type" required>
+                            @foreach ($types as $type)
+                            <option value="{{ $type['value'] }}">{{ $type['title'] }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                    <select class="custom-select" name="lamaran_id" id="inputGroupSelect01" required>
-                        @foreach ($lamarans as $lamaran)
-                        <option value="{{ $lamaran->id }}">{{ $lamaran->id }} ({{ $lamaran->pelamar->user->name }})</option>
-                        @endforeach
-                    </select>
-                    <div class="form-group mb-0 mt-3">
-                        <label for="saw_kriteria_id">Kriteria</label>
+                    <div class="form-group">
+                        <label for="name">Nama</label>
+                        <input type="name" class="form-control" name="name" placeholder="Nama User" required>
                     </div>
-                    <select class="custom-select" name="saw_kriteria_id" id="inputGroupSelect01" required>
-                        @foreach ($saw_kriterias as $saw_kriteria)
-                        <option value="{{ $saw_kriteria->id }}">{{ $saw_kriteria->nama }}</option>
-                        @endforeach
-                    </select>
-                    <div class="form-group mt-3">
-                        <label for="nilai">Nilai</label>
-                        <input type="number" class="form-control" step="0.001" name="nilai" placeholder="Nilai" required>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" name="email" placeholder="Email User" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" name="password" placeholder="Password User" required>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -390,6 +390,12 @@ return [
             ],
         ],
         [
+            'text'        => 'User',
+            'url'         => '/user',
+            'icon'        => 'fas fa-fw fa-users',
+            'user_types'  => 'admin',
+        ],
+        [
             'text'    => 'Hasil Tes',
             'url'     => '/pelamar/tes/hasil',
             'icon' => 'fas fa-fw fa-graduation-cap',
