@@ -54,7 +54,11 @@ class SoalController extends Controller
         )
         ->when(
             $user->type != 'admin', function($query) use ($user) {
-                $query->where('user_id', $user->id);
+                $query->whereHas(
+                    'pekerjaan', function($query) use ($user) {
+                        $query->where('user_id', $user->id);
+                    }
+                );
             }
         )
         ->get();
@@ -139,6 +143,7 @@ class SoalController extends Controller
     {
         $data = $request->validate([
             'saw_kriteria_id' => 'nullable|exists:saw_kriterias,id',
+            'pekerjaan_id' => 'nullable|exists:pekerjaans,id',
             'description' => 'nullable',
             'options' => 'nullable|array',
             'answers' => 'nullable|array',
@@ -165,7 +170,8 @@ class SoalController extends Controller
                 $data['options'] = json_encode($options);
             }
 
-            $soal->saw_kriteria_id = $data['saw_kriteria_id'];
+            $soal->saw_kriteria_id = \Arr::get($data, 'saw_kriteria_id');
+            $soal->pekerjaan_id = \Arr::get($data, 'pekerjaan_id');
             $soal->description = $data['description'];
             $soal->options = $data['options'];
 

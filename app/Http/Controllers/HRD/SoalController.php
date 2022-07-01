@@ -42,11 +42,6 @@ class SoalController extends App
                 $query->where('saw_kriteria_id', $cariKriteriaId);
             }
         )
-        ->when(
-            $user->type != 'admin', function($query) use ($user) {
-                $query->where('user_id', $user->id);
-            }
-        )
         ->whereHas(
             'pekerjaan', function($query) use ($user) {
                 $query->where('user_id', $user->id);

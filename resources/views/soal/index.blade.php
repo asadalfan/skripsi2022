@@ -91,7 +91,7 @@ $url = $userType != 'admin' ? $userType . '/' : '';
                                             <form action="{{ url($url . 'tes/soal/update/' . $soal->id) }}" method="POST">
                                                 @csrf
                                                 <div class="modal-body">
-                                                    <div class="form-group">
+                                                    <div class="form-group mb-0">
                                                         <label for="type">Kriteria</label>
                                                     </div>
                                                     <select class="custom-select" name="saw_kriteria_id" id="inputGroupSelect01">
@@ -99,7 +99,7 @@ $url = $userType != 'admin' ? $userType . '/' : '';
                                                         <option {{ $soal->saw_kriteria_id == $saw_kriteria->id ? 'selected' : '' }} value="{{ $saw_kriteria->id }}">{{ $saw_kriteria->nama }}</option>
                                                         @endforeach
                                                     </select>
-                                                    <div class="form-group mt-3">
+                                                    <div class="form-group mt-3 mb-0">
                                                         <label for="type">Pekerjaan</label>
                                                     </div>
                                                     <select class="custom-select" name="pekerjaan_id" id="inputGroupSelect01">
@@ -208,7 +208,7 @@ $url = $userType != 'admin' ? $userType . '/' : '';
             <form action="{{ url($url . 'tes/soal') }}" method="POST">
                 @csrf
                 <div class="modal-body">
-                    <div class="form-group">
+                    <div class="form-group mb-0">
                         <label for="type">Kriteria</label>
                     </div>
                     <select class="custom-select" name="saw_kriteria_id" id="inputGroupSelect01" required>
@@ -216,7 +216,7 @@ $url = $userType != 'admin' ? $userType . '/' : '';
                         <option value="{{ $saw_kriteria->id }}">{{ $saw_kriteria->nama }}</option>
                         @endforeach
                     </select>
-                    <div class="form-group mt-3">
+                    <div class="form-group mt-3 mb-0">
                         <label for="type">Pekerjaan</label>
                     </div>
                     <select class="custom-select" name="pekerjaan_id" id="inputGroupSelect01" required>
