@@ -29,6 +29,7 @@
                                     <th>Nama</th>
                                     <th>Deskripsi</th>
                                     <th>Perusahaan</th>
+                                    <th>Status</th>
                                     <th>Dibuat pada</th>
                                     <th>Diperbarui pada</th>
                                     <th>Aksi</th>
@@ -53,6 +54,13 @@
                                     </td>
                                     <td>{{ $pekerjaan->description ?? '-' }}</td>
                                     <td>{{ $pekerjaan->perusahaan->name }}</td>
+                                    <td>
+                                        @if ($pekerjaan->status)
+                                        <span class="badge badge-pill badge-success">Dibuka</span>
+                                        @else
+                                        <span class="badge badge-pill badge-danger">Ditutup</span>
+                                        @endif
+                                    </td>
                                     <td>{{ date("Y-m-d H:i:s", strtotime($pekerjaan->created_at." +7 hours")) }}</td>
                                     <td>{{ date("Y-m-d H:i:s", strtotime($pekerjaan->updated_at." +7 hours")) }}</td>
                                     <td>

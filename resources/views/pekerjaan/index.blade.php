@@ -34,6 +34,7 @@ $url = $userType != 'admin' ? $userType . '/' : '';
                                     <th>Nama</th>
                                     <th>Deskripsi</th>
                                     <th>Perusahaan</th>
+                                    <th>Status</th>
                                     <th>Dibuat pada</th>
                                     <th>Diperbarui pada</th>
                                     <th>Aksi</th>
@@ -58,6 +59,13 @@ $url = $userType != 'admin' ? $userType . '/' : '';
                                     </td>
                                     <td>{{ $pekerjaan->description ?? '-' }}</td>
                                     <td>{{ $pekerjaan->perusahaan->name }}</td>
+                                    <td>
+                                        @if ($pekerjaan->status)
+                                        <span class="badge badge-pill badge-success">Dibuka</span>
+                                        @else
+                                        <span class="badge badge-pill badge-danger">Ditutup</span>
+                                        @endif
+                                    </td>
                                     <td>{{ date("Y-m-d H:i:s", strtotime($pekerjaan->created_at." +7 hours")) }}</td>
                                     <td>{{ date("Y-m-d H:i:s", strtotime($pekerjaan->updated_at." +7 hours")) }}</td>
                                     <td>
@@ -110,6 +118,13 @@ $url = $userType != 'admin' ? $userType . '/' : '';
                                                                 @endforeach
                                                             </select>
                                                         </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="name">Status</label>
+                                                        <select class="form-control" name="status" required>
+                                                            <option {{ $pekerjaan->status ? 'selected' : '' }} value="on">Dibuka</option>
+                                                            <option {{ ! $pekerjaan->status ? 'selected' : '' }} value="off">Ditutup</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -195,6 +210,13 @@ $url = $userType != 'admin' ? $userType . '/' : '';
                                 <option value="{{ $tag->id }}">{{ $tag->name }}</option>
                                 @endforeach
                             </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Status</label>
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch1" name="status" checked>
+                            <label class="custom-control-label" for="customSwitch1">Buka</label>
                         </div>
                     </div>
                 </div>

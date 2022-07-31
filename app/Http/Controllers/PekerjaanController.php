@@ -51,6 +51,7 @@ class PekerjaanController extends Controller
         ]);
 
         $data = array_merge(['user_id' => Auth::id()], $data);
+        $data['status'] = $request->input('status') == 'on' ? true : false;
 
         try {
             $pekerjaan = Pekerjaan::create($data);
@@ -85,12 +86,15 @@ class PekerjaanController extends Controller
             'tags' => 'required|array',
         ]);
 
+        $data['status'] = $request->input('status') == 'on' ? true : false;
+
         try {
             $pekerjaan = Pekerjaan::find($id);
 
             $pekerjaan->perusahaan_id = $data['perusahaan_id'];
             $pekerjaan->name = $data['name'];
             $pekerjaan->description = $data['description'];
+            $pekerjaan->status = \Arr::get($data, 'status');
 
             $pekerjaan->save();
 

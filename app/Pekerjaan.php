@@ -22,6 +22,7 @@ class Pekerjaan extends Model
         'diverifikasi_pada',
         'diverifikasi_oleh',
         'catatan_diverifikasi',
+        'status',
     ];
 
     /**
@@ -31,6 +32,7 @@ class Pekerjaan extends Model
      */
     protected $casts = [
         'diverifikasi' => 'boolean',
+        'status' => 'boolean',
     ];
 
     /**
@@ -63,5 +65,13 @@ class Pekerjaan extends Model
     public function diverifikasiOleh()
     {
         return $this->belongsTo(User::class, 'diverifikasi_oleh');
+    }
+
+    /**
+     * Get the lamaran for the pekerjaan post.
+     */
+    public function lamarans()
+    {
+        return $this->hasMany(Lamaran::class);
     }
 }
